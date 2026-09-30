@@ -1,10 +1,11 @@
 import { useState } from 'react'
 import { StatusBar } from 'expo-status-bar';
-import { styles } from './src/login_page/styles';
-import { Text, View, TextInput, ScrollView, Pressable, Button } from 'react-native';
-import { verify } from './src/login_page/verification';
+import { styles } from '../src/login_page/styles';
+import { Text, View, TextInput, ScrollView, Pressable } from 'react-native';
+import { Link } from 'expo-router'
+import { verify } from '../src/login_page/verification';
 
-export default function App() {
+export default function LoginPage() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
@@ -43,13 +44,13 @@ export default function App() {
       >
         <Text style={styles.buttonText}>press me</Text>
       </Pressable>
-      <Button
+      <Link
         style={styles.passReset}
         title='Forgot Password?'
-        onPress={() => {
-          alert('jus try remembering it twin </3')
-        }}
-      />
+        href='/resetPassword'
+      >
+        Forgot Password?
+      </Link>
       <StatusBar style="dark" />
     </ScrollView>
   );
