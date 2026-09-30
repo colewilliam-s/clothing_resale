@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { StatusBar } from 'expo-status-bar';
 import { styles } from './src/login_page/styles';
-import { Text, View, TextInput, ScrollView, Pressable } from 'react-native';
+import { Text, View, TextInput, ScrollView, Pressable, Button } from 'react-native';
 import { verify } from './src/login_page/verification';
 
 export default function App() {
@@ -43,6 +43,13 @@ export default function App() {
       >
         <Text style={styles.buttonText}>press me</Text>
       </Pressable>
+      <Button
+        style={styles.passReset}
+        title='Forgot Password?'
+        onPress={() => {
+          alert('jus try remembering it twin </3')
+        }}
+      />
       <StatusBar style="dark" />
     </ScrollView>
   );
