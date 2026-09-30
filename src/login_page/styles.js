@@ -20,7 +20,7 @@ export const styles = StyleSheet.create({
     borderBlockColor: '#000',
     alignSelf: 'center',
     borderWidth: 1,
-    width: '25%',
+    width: '65%',
     marginTop: '15%',
     height: '3.5%'
   }
