@@ -18,6 +18,20 @@ To close the project, use the command
 ```
 Ctrl ^ C
 ```
+## Pushing items to the supabase db (PostgreSQL)
+Whenever you want to push something to the database, make sure you have supabase installed by running
+```
+npm install supabase --save-dev
+```
+After you run this, go to supabase.com, link your github account and create it. Then, after you have account, run and follow the steps of 
+```
+npx supabase login
+```
+Assuming you're added to the DB at this time, whenever you make a change to it, use this command to push changes to the DB
+```
+npx supabase db push
+```
+# 
 Cole wrote everything above this, everything below is just react native documentation.
 #
 
