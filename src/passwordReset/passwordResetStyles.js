@@ -8,7 +8,6 @@ export const styles = StyleSheet.create({
     },
     text: {
         color: '#fff',
-        alignSelf: 'center',
-        justifyContent: 'center'
+        textAlign: 'center'
     }
 });

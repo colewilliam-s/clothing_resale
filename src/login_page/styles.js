@@ -19,7 +19,7 @@ export const styles = StyleSheet.create({
     fontFamily: 'Verdana'
   },
   login: {
-    marginTop: '40%'
+    marginTop: '15%'
   },
   emailInput: {
     borderBlockColor: '#000',
@@ -46,11 +46,10 @@ export const styles = StyleSheet.create({
   },
   button: {
     backgroundColor: '#1f8a0c',
-    paddingVertical: 14,
+    paddingVertical: 13,
     borderRadius: 8,
     width: '45%',
-    alignSelf: 'center',
-    marginTop: 16
+    alignSelf: 'center'
   },
   buttonPressed: {
     opacity: 0.7,
@@ -62,6 +61,9 @@ export const styles = StyleSheet.create({
     fontWeight: '700'
   },
   passReset: {
-    color: '#000'
+    color: '#000',
+    textAlign: 'center',
+    marginTop: '6%',
+    fontSize: 20
   }
 });
