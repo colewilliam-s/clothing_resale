@@ -49,7 +49,7 @@ export default function LoginPage() {
         title='Forgot Password?'
         href='/resetPassword'
       >
-        Forgot Password?
+        Forgot/Reset Password?
       </Link>
       <StatusBar style="dark" />
     </ScrollView>

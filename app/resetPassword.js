@@ -4,12 +4,12 @@ import { ScrollView, Text, View } from 'react-native';
 
 export default function passwordReset() {
     return (
-        <ScrollView
+            <ScrollView
             style={styles.container}
-        >
+            >
             <View>
-                <Text style={styles.text}>Hello World</Text>
+            <Text style={styles.text}>Hello World</Text>
             </View>
-        </ScrollView>
-    )
+            </ScrollView>
+            )
 }

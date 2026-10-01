@@ -61,7 +61,7 @@ export const styles = StyleSheet.create({
     fontWeight: '700'
   },
   passReset: {
-    color: '#000',
+    color: '#0037dd',
     textAlign: 'center',
     marginTop: '6%',
     fontSize: 20
