@@ -4,10 +4,12 @@ import { styles } from '../src/login_page/styles';
 import { Text, View, TextInput, ScrollView, Pressable } from 'react-native';
 import { Link } from 'expo-router'
 import { verify } from '../src/login_page/verification';
+import { useRouter } from '../supabase';
 
 export default function LoginPage() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const router = useRouter();
 
   return (
     <ScrollView 
@@ -38,8 +40,9 @@ export default function LoginPage() {
           styles.button,
           pressed && styles.buttonPressed
         ]}
-        onPress={() => {
-          verify(email, password)
+        onPress={async () => {
+          const ok = await verify(email, password);
+          if(ok) router.replace('/browse'); //browse doesn't exist yet i lowkey need to make it exist
         }}
       >
         <Text style={styles.buttonText}>press me</Text>
