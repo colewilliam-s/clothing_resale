@@ -53,6 +53,13 @@ export default function LoginPage() {
       >
         Forgot/Reset Password?
       </Link>
+      <Link
+        style={styles.passReset}
+        title='Forgot Password?'
+        href='/signup'
+      >
+        Sign Up
+      </Link>
       <StatusBar style="dark" />
     </ScrollView>
   );
