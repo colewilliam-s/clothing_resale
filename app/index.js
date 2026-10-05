@@ -41,7 +41,7 @@ export default function LoginPage() {
         ]}
         onPress={async () => {
           const ok = await verify(email, password);
-          if(ok) router.replace('/browse'); //browse doesn't exist yet i lowkey need to make it exist
+          if(ok) router.replace('/homepage');
         }}
       >
         <Text style={styles.buttonText}>press me</Text>
