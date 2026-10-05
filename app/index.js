@@ -1,10 +1,9 @@
-import { useState } from 'react'
+import { useState } from 'react';
 import { StatusBar } from 'expo-status-bar';
 import { styles } from '../src/login_page/styles';
 import { Text, View, TextInput, ScrollView, Pressable } from 'react-native';
-import { Link } from 'expo-router'
+import { Link, useRouter } from 'expo-router';
 import { verify } from '../src/login_page/verification';
-import { useRouter } from '../supabase';
 
 export default function LoginPage() {
   const [email, setEmail] = useState('');
@@ -53,6 +52,13 @@ export default function LoginPage() {
         href='/resetPassword'
       >
         Forgot/Reset Password?
+      </Link>
+      <Link
+        style={styles.passReset}
+        title='Forgot Password?'
+        href='/signup'
+      >
+        Sign Up
       </Link>
       <StatusBar style="dark" />
     </ScrollView>
