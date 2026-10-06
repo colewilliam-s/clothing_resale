@@ -55,7 +55,7 @@ export const styles = StyleSheet.create({
     opacity: 0.7,
   },
   buttonText: {
-    color: '#fff',
+    color: '#ffffff',
     textAlign: 'center',
     fontSize: 18,
     fontWeight: '700'
@@ -63,6 +63,7 @@ export const styles = StyleSheet.create({
   passReset: {
     color: '#0037dd',
     textAlign: 'center',
+    textDecorationLine: 'underline',
     marginTop: '6%',
     fontSize: 20
   }
