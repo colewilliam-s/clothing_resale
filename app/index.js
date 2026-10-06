@@ -4,6 +4,7 @@ import { styles } from '../src/login_page/styles';
 import { Text, View, TextInput, ScrollView, Pressable } from 'react-native';
 import { Link, useRouter } from 'expo-router';
 import { verify } from '../src/login_page/verification';
+import { signInWithMicrosoft } from '../src/login_page/microsoftLogin';
 
 export default function LoginPage() {
   const [email, setEmail] = useState('');
@@ -44,7 +45,19 @@ export default function LoginPage() {
           if(ok) router.replace('/homepage');
         }}
       >
-        <Text style={styles.buttonText}>press me</Text>
+        <Text style={styles.buttonText}>Login</Text>
+      </Pressable>
+      <Pressable
+        style={({pressed}) => [
+          styles.button,
+          pressed && styles.buttonPressed
+        ]}
+        onPress={async () => {
+          const r = await signInWithMicrosoft();
+          if (!r.ok) setError(r.message);
+        }}
+      >
+        <Text style={styles.buttonText}>Login with UVM SSO</Text>
       </Pressable>
       <Link
         style={styles.passReset}
