@@ -18,6 +18,7 @@ export async function signInWithMicrosoft() {
 
   const result = await WebBrowser.openAuthSessionAsync(data.url, redirectTo);
   if (result.type !== 'success') return { ok: false, message: 'Sign-in cancelled.' };
+  console.log("AUTH SESSION RESULT:",result);
 
   // Handle both PKCE (?code=) and implicit (#access_token=) responses
   const url = result.url;
