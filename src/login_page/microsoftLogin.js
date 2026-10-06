@@ -12,19 +12,10 @@ export async function signInWithMicrosoft() {
     provider: 'azure',
     options: { redirectTo, skipBrowserRedirect: true, scopes: 'email' },
   });
-  // console.log('REDIRECT TO', redirectTo);
-  console.log("OAUTH URL:", data?.url);
   if (error) return { ok: false, message: error.message };
 
-  // const result = await WebBrowser.openAuthSessionAsync(data.url, redirectTo);
-  // if (result.type !== 'success') return { ok: false, message: 'Sign-in cancelled.' };
-  // console.log("AUTH SESSION RESULT:",result);
-
-  const result = await WebBrowser.openAuthSessionAsync(
-    data.url,
-    redirectTo
-  )
-  console.log("Auth Result:", result);
+  const result = await WebBrowser.openAuthSessionAsync(data.url, redirectTo);
+  if (result.type !== 'success') return { ok: false, message: 'Sign-in cancelled.' };
 
   // Handle both PKCE (?code=) and implicit (#access_token=) responses
   const url = result.url;

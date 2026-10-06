@@ -54,7 +54,12 @@ export default function LoginPage() {
         ]}
         onPress={async () => {
           const r = await signInWithMicrosoft();
-          if (!r.ok) setError(r.message);
+
+          if (r.ok) {
+            router.replace('/homepage');
+          } else {
+            setError(r.message);
+          }
         }}
       >
         <Text style={styles.buttonText}>Login with UVM SSO</Text>
