@@ -10,11 +10,12 @@
 // }
 
 import { supabase } from '../supabase';
+import { Alert } from 'react-native';
 
 export async function verify(email, password){
     const { data, error } = await supabase.auth.signInWithPassword({ email, password });
     if(error) {
-        alert(error.message);
+        Alert.alert('Login Error', error.message);
         return false;
     }
     return true;
