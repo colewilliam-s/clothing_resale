@@ -49,7 +49,8 @@ export const styles = StyleSheet.create({
     paddingVertical: 13,
     borderRadius: 8,
     width: '45%',
-    alignSelf: 'center'
+    alignSelf: 'center',
+    margin: '3'
   },
   buttonPressed: {
     opacity: 0.7,
