@@ -1,3 +1,65 @@
+create table public.profiles (
+  id uuid primary key references auth.users(id) on delete cascade,
+  display_name text,
+  university_domain text,
+  created_at timestamptz default now()
+);
+
+alter table public.profiles enable row level security;
+
+create policy "Signed-in users can view profiles"
+  on public.profiles for select to authenticated using (true);
+
+create policy "Users can update their own profile"
+  on public.profiles for update to authenticated
+  using (auth.uid() = id) with check (auth.uid() = id);
+
+-- Auto-create a profile on signup, using the email domain as the university
+create function public.handle_new_user()
+returns trigger
+language plpgsql
+security definer set search_path = ''
+as $$
+begin
+  insert into public.profiles (id, university_domain)
+  values (new.id, split_part(new.email, '@', 2));
+  return new;
+end;
+$$;
+
+create trigger on_auth_user_created
+  after insert on auth.users
+  for each row execute function public.handle_new_user();
+
+-- Create profiles for users who signed up before this existed
+insert into public.profiles (id, university_domain)
+select id, split_part(email, '@', 2)
+from auth.users
+on conflict (id) do nothing;
+
+create table public.listings (
+  id uuid primary key default gen_random_uuid(),
+  seller_id uuid not null references public.profiles(id) on delete cascade,
+  title text not null,
+  description text,
+  price numeric(8,2) not null check (price >= 0),
+  category text,
+  size text,
+  condition text,
+  image_url text,
+  status text not null default 'active' check (status in ('active', 'sold')),
+  created_at timestamptz default now()
+);
+
+alter table public.listings enable row level security;
+
+create policy "Signed-in users can view listings"
+  on public.listings for select to authenticated using (true);
+
+create policy "Sellers manage their own listings"
+  on public.listings for all to authenticated
+  using (auth.uid() = seller_id) with check (auth.uid() = seller_id);
+
 create table public.conversations (
   id uuid primary key default gen_random_uuid(),
   listing_id uuid references public.listings(id) on delete set null,
