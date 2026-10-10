@@ -15,6 +15,12 @@ export default function HomePage() {
                     >
                         Log Out
                     </Link>
+                    <Link
+                        title='direct_messages'
+                        href='/dm'
+                    >
+                        Direct Messages
+                    </Link>
                 </View>
             </ScrollView>
         </>
