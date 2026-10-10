@@ -1,5 +1,5 @@
 import { View, ScrollView, Text } from 'react-native';
-import { useRouter, Link, Stack } from 'expo-router';
+import { useRouter, Link } from 'expo-router';
 
 export default function HomePage() {
     const router = useRouter();
