@@ -67,5 +67,11 @@ export const styles = StyleSheet.create({
     textDecorationLine: 'underline',
     marginTop: '6%',
     fontSize: 20
+  },
+  homePageContainer: {
+    
+  },
+  homePageText: {
+    paddingTop: '10%'
   }
 });
