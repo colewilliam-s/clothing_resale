@@ -12,7 +12,7 @@ export const styles = StyleSheet.create({
   header: {
     fontSize: 40,
     textDecorationColor: '#000',
-    textDecorationLine: 'underline',
+    // textDecorationLine: 'underline',
     textAlign: 'center',
     marginTop: '35%',
     fontFamily: 'sans-serif-light',
