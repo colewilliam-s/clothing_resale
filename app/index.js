@@ -19,7 +19,7 @@ export default function LoginPage() {
         keyboardDismissMode='on-drag'
         keyboardShouldPersistTaps='handled'
       >
-        <Text style={styles.header}>CatamountResale</Text>
+        <Text style={styles.header}>Thrift Shift</Text>
         <View style={styles.login}>
           <TextInput 
             style={styles.emailInput}
