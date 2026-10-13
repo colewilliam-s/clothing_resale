@@ -14,8 +14,8 @@ export default function SignUp() {
 
   async function handleSignUp() {
     const cleanEmail = email.trim().toLowerCase();
-    if (!cleanEmail.endsWith('.edu')) {
-      setMessage('Please use your .edu email.');
+    if (!cleanEmail.endsWith('uvm.edu')) {
+      setMessage('Please use your uvm.edu email.');
       return;
     }
     if (password.length < 6) {
