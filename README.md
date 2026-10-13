@@ -18,7 +18,7 @@ To close the project, use the command
 ```
 Ctrl ^ C
 ```
-## Pushing items to the supabase db (PostgreSQL)
+## Pushing items to the supabase db (PostgreSQL) (supabase is now connected to the repository)
 Whenever you want to push something to the database, make sure you have supabase installed by running
 ```
 npm install supabase --save-dev
