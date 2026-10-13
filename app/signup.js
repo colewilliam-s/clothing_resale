@@ -14,10 +14,10 @@ export default function SignUp() {
 
   async function handleSignUp() {
     const cleanEmail = email.trim().toLowerCase();
-    // if (!cleanEmail.endsWith('.edu')) {
-    //   setMessage('Please use your .edu email.');
-    //   return;
-    // }
+    if (!cleanEmail.endsWith('.edu')) {
+      setMessage('Please use your .edu email.');
+      return;
+    }
     if (password.length < 6) {
       setMessage('Password must be at least 6 characters.');
       return;
