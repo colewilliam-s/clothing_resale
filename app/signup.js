@@ -14,10 +14,10 @@ export default function SignUp() {
 
   async function handleSignUp() {
     const cleanEmail = email.trim().toLowerCase();
-    if (!cleanEmail.endsWith('.edu')) {
-      setMessage('Please use your .edu email.');
-      return;
-    }
+    // if (!cleanEmail.endsWith('.edu')) {
+    //   setMessage('Please use your .edu email.');
+    //   return;
+    // }
     if (password.length < 6) {
       setMessage('Password must be at least 6 characters.');
       return;
@@ -81,7 +81,7 @@ export default function SignUp() {
       ) : (
         <>
           <TextInput
-            placeholder='6-digit code'
+            placeholder='8-digit code'
             value={code}
             onChangeText={setCode}
             keyboardType='number-pad'
