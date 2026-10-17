@@ -1,15 +1,17 @@
 import { useState } from 'react';
-import { ScrollView, Text, TextInput, Pressable } from 'react-native';
+import { ScrollView, Text, TextInput, Pressable, View } from 'react-native';
 import { useRouter } from 'expo-router';
 import { styles } from '../src/styling/resetPassStyles';
 import { supabase } from '../src/supabase';
+import * as Linking from 'expo-linking';
 
 export default function passwordReset() {
   const [email, setEmail] = useState('');
   const router = useRouter();
 
   async function handleReset() {
-    const { error } = await supabase.auth.resetPasswordForEmail(email);
+    const redirectTo = Linking.createURL('update-password');
+    const { error } = await supabase.auth.resetPasswordForEmail(email, { redirectTo });
     if (error) {
       alert(error.message);
       return;
@@ -19,18 +21,25 @@ export default function passwordReset() {
   }
 
   return (
-    <ScrollView style={styles.container}>
-      <Text style={styles.text}>Enter your email and we'll send a reset link.</Text>
-      <TextInput
-        placeholder='Email'
-        value={email}
-        onChangeText={setEmail}
-        keyboardType='email-address'
-        autoCapitalize='none'
-      />
-      <Pressable onPress={handleReset}>
-        <Text>Send reset link</Text>
-      </Pressable>
-    </ScrollView>
+    <>
+      <ScrollView 
+        style={styles.container}
+        contentContainerStyle={styles.contentContainer}
+      >
+        <View style={styles.div}>
+          <Text style={styles.text}>Enter your email and we'll send a reset link.</Text>
+          <TextInput
+            placeholder='Email'
+            value={email}
+            onChangeText={setEmail}
+            keyboardType='email-address'
+            autoCapitalize='none'
+          />
+          <Pressable onPress={handleReset}>
+            <Text>Send reset link</Text>
+          </Pressable>
+        </View>
+      </ScrollView>
+    </>
   );
 }
