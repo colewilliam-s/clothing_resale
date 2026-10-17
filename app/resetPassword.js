@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { ScrollView, Text, TextInput, Pressable } from 'react-native';
 import { useRouter } from 'expo-router';
-import { styles } from '../src/passwordReset/passwordResetStyles';
+import { styles } from '../src/styling/resetPassStyles';
 import { supabase } from '../src/supabase';
 
 export default function passwordReset() {
