@@ -31,6 +31,9 @@ Assuming you're added to the DB at this time, whenever you make a change to it, 
 ```
 npx supabase db push
 ```
+
+## Testing the password reset/resetting your password
+In order to reset your password (at least on iOS, not really sure how it would work on an android simulator), you're going to get sent a link to your UVM email on outlook to handle the password reset. Copy and paste that link into Safari, and you'll get a prompt to open the page on the compiled app.
 # 
 Cole wrote everything above this, everything below is just react native documentation.
 #
