@@ -8,7 +8,7 @@ export const ROW_SLOTS = 5;
 
 // Everyone with at least one listing, each with their newest listings first.
 // (Later: filter by the viewer's size preference here.)
-export async function fetchFeed() {
+export async function fetchFeed(): Promise<Profile[]> {
   const { data, error } = await supabase
     .from('profiles')
     .select('id, display_name, university_domain, listings!inner(id, image_url, status, created_at)')
@@ -18,3 +18,9 @@ export async function fetchFeed() {
   if (error) throw error;
   return data;
 }
+
+export type Profile = {
+  id: string;
+  display_name: string | null;
+  university_domain: string | null;
+};
