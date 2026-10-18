@@ -5,16 +5,16 @@ import {
   View, Text, TextInput, FlatList, Pressable,
   KeyboardAvoidingView, Platform,
 } from 'react-native';
+import { label } from '../src/label';
+import type { Profile, Message } from '../src/types';
 import { supabase } from '../src/supabase';
 
-const label = (p) => p.display_name || `${p.university_domain ?? 'user'} (${p.id.slice(0, 6)})`;
-
 export default function DM() {
-  const [userId, setUserId] = useState(null);
-  const [people, setPeople] = useState([]);
-  const [convId, setConvId] = useState(null);
+  const [userId, setUserId] = useState<string | null>(null);
+  const [people, setPeople] = useState<Profile[]>([]);
+  const [convId, setConvId] = useState<string | null>(null);
   const [otherName, setOtherName] = useState('');
-  const [messages, setMessages] = useState([]); // newest first
+  const [messages, setMessages] = useState<Message[]>([]); // newest first
   const [text, setText] = useState('');
   const [error, setError] = useState('');
 
@@ -56,17 +56,19 @@ export default function DM() {
       .on(
         'postgres_changes',
         { event: 'INSERT', schema: 'public', table: 'messages', filter: `conversation_id=eq.${convId}` },
-        (payload) =>
+        (payload) => {
+          const incoming = payload.new as Message;
           setMessages((prev) =>
-            prev.some((m) => m.id === payload.new.id) ? prev : [payload.new, ...prev]
-          )
+            prev.some((m) => m.id === incoming.id) ? prev : [incoming, ...prev]
+          );
+        }
       )
       .subscribe();
 
     return () => { supabase.removeChannel(channel); };
   }, [convId]);
 
-  async function openChat(person) {
+  async function openChat(person: Profile) {
     setError('');
     const { data, error } = await supabase.rpc('get_or_create_conversation', { other: person.id });
     if (error) return setError(error.message);
@@ -76,7 +78,7 @@ export default function DM() {
 
   async function send() {
     const body = text.trim();
-    if (!body) return;
+    if (!body || !userId || !convId) return;
     setText('');
     const { error } = await supabase
       .from('messages')
