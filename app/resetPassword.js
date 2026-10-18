@@ -7,9 +7,16 @@ import * as Linking from 'expo-linking';
 
 export default function passwordReset() {
   const [email, setEmail] = useState('');
+  const [confirmEmail, setConfirmEmail] = useState(''); //trying to get an email check going inside of the resetpassword file
   const router = useRouter();
 
   async function handleReset() {
+    if (email !== confirmEmail) {
+      setEmail('');
+      setConfirmEmail('');
+      alert("Emails do not match");
+      return;
+    }
     const redirectTo = Linking.createURL('update-password');
     const { error } = await supabase.auth.resetPasswordForEmail(email, { redirectTo });
     if (error) {
@@ -32,6 +39,13 @@ export default function passwordReset() {
             placeholder='Email'
             value={email}
             onChangeText={setEmail}
+            keyboardType='email-address'
+            autoCapitalize='none'
+          />
+          <TextInput
+            placeholder='Confirm Email'
+            value={confirmEmail}
+            onChangeText={setConfirmEmail}
             keyboardType='email-address'
             autoCapitalize='none'
           />
