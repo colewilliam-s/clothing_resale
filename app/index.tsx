@@ -10,6 +10,7 @@ export default function LoginPage() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const router = useRouter();
+  const [error, setError] = useState('');
 
   return (
     <>
@@ -60,7 +61,7 @@ export default function LoginPage() {
             if (r.ok) {
               router.replace('/homepage');
             } else {
-              setError(r.message);
+              setError(r.message ?? 'Sign-in failed');
             }
           }}
         >
@@ -68,14 +69,12 @@ export default function LoginPage() {
         </Pressable>
         <Link
           style={styles.passReset}
-          title='Forgot Password?'
           href='/resetPassword'
         >
           Forgot/Reset Password?
         </Link>
         <Link
           style={styles.passReset}
-          title='Forgot Password?'
           href='/signup'
         >
           Sign Up
