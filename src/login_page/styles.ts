@@ -16,7 +16,6 @@ export const styles = StyleSheet.create({
     textAlign: 'center',
     marginTop: '35%',
     fontFamily: 'sans-serif-light',
-    fontFamily: 'Verdana'
   },
   login: {
     marginTop: '15%'
@@ -29,7 +28,7 @@ export const styles = StyleSheet.create({
     width: '65%',
     height: '17%',
     textAlign: 'left',
-    paddingLeft: '10',
+    paddingLeft: 10,
     fontSize: 20
   },
   passwordInput: {
@@ -41,7 +40,7 @@ export const styles = StyleSheet.create({
     marginTop: '12.5%',
     height: '17%',
     textAlign: 'left',
-    paddingLeft: '10',
+    paddingLeft: 10,
     fontSize: 20
   },
   button: {
@@ -50,7 +49,7 @@ export const styles = StyleSheet.create({
     borderRadius: 8,
     width: '45%',
     alignSelf: 'center',
-    margin: '3'
+    margin: 3
   },
   buttonPressed: {
     opacity: 0.7,
