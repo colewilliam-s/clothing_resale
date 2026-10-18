@@ -1,13 +1,17 @@
 import { Tabs } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
 
+type IconName = keyof typeof Ionicons.glyphMap;
+
 // The bottom tab bar. Fixed to the bottom edge, full width, not floating.
 // Placeholder: icons and greys until those are decided.
 // Icons are filled on the active tab, outlined on the others.
 
-const icon = (active, inactive) => ({ focused, color, size }) => (
-  <Ionicons name={focused ? active : inactive} size={size} color={color} />
-);
+const icon =
+  (active: IconName, inactive: IconName) =>
+  ({ focused, color, size }: { focused: boolean; color: string; size: number }) => (
+    <Ionicons name={focused ? active : inactive} size={size} color={color} />
+  );
 
 export default function TabLayout() {
   return (
