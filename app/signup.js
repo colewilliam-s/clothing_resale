@@ -6,6 +6,7 @@ import { supabase } from '../src/supabase';
 export default function SignUp() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
   const [code, setCode] = useState('');
   const [step, setStep] = useState('form'); // 'form' or 'verify'
   const [message, setMessage] = useState('');
@@ -14,6 +15,12 @@ export default function SignUp() {
 
   async function handleSignUp() {
     const cleanEmail = email.trim().toLowerCase();
+    if (password !== confirmPassword) {
+      setPassword('');
+      setConfirmPassword('');
+      alert("Passwords don't match");
+      return;
+    }
     if (!cleanEmail.endsWith('uvm.edu')) {
       setMessage('Please use your uvm.edu email.');
       return;
@@ -58,7 +65,7 @@ export default function SignUp() {
   }
 
   return (
-    <View style={{ flex: 1, padding: 20, justifyContent: 'center' }}>
+    <View style={{ flex: 1, padding: 20, justifyContent: 'center', alignItems: 'center' }}>
       {step === 'form' ? (
         <>
           <TextInput
@@ -74,8 +81,19 @@ export default function SignUp() {
             onChangeText={setPassword}
             secureTextEntry
           />
+          <TextInput
+            placeholder='Confirm Password'
+            value={confirmPassword}
+            onChangeText={setConfirmPassword}
+            secureTextEntry
+          />
           <Pressable onPress={handleSignUp} disabled={loading}>
             <Text>{loading ? 'Creating account...' : 'Sign up'}</Text>
+          </Pressable>
+          <Pressable onPress={async () => {
+            router.replace('/');
+          }}>
+            <Text>Return to Login</Text>
           </Pressable>
         </>
       ) : (
