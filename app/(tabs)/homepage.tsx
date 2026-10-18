@@ -1,13 +1,14 @@
 import { useEffect, useState } from 'react';
 import { FlatList, View, Text, ActivityIndicator } from 'react-native';
 import { styles } from '../../src/homepage/styles';
-import { fetchFeed, type Profile } from '../../src/homepage/feed';
+import { fetchFeed } from '../../src/homepage/feed';
+import type { FeedProfile } from '../../src/types';
 import { UserRow } from '../../src/homepage/UserRow';
 
 // The "Home" header and the bottom tab bar come from app/(tabs)/_layout.js
 
 export default function HomePage() {
-  const [feed, setFeed] = useState<Profile[]>([]);
+  const [feed, setFeed] = useState<FeedProfile[]>([]);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
   const [error, setError] = useState('');
