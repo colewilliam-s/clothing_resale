@@ -7,6 +7,7 @@ import { styles } from '../src/styling/updatePassStyles';
 export default function UpdatePassword() {
   const router = useRouter();
   const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
   const [ready, setReady] = useState(false);
 
   useEffect(() => {
@@ -20,6 +21,12 @@ export default function UpdatePassword() {
   }, []);
 
   async function handleUpdate() {
+    if (password !== confirmPassword){
+      setPassword('');
+      setConfirmPassword('');
+      alert("Passwords do not match!");
+      return;
+    }
     const { error } = await supabase.auth.updateUser({ password });
     if (error) {
       alert(error.message);
@@ -42,6 +49,13 @@ export default function UpdatePassword() {
           placeholder='New password'
           value={password}
           onChangeText={setPassword}
+          secureTextEntry
+        />
+        <TextInput
+          style={styles.input}
+          placeholder='Confirm New password'
+          value={confirmPassword}
+          onChangeText={setConfirmPassword}
           secureTextEntry
         />
         <Pressable style={styles.button} onPress={handleUpdate}>

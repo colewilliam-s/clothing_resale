@@ -11,6 +11,12 @@ export default function passwordReset() {
   const router = useRouter();
 
   async function handleReset() {
+    if (email !== confirmEmail) {
+      setEmail('');
+      setConfirmEmail('');
+      alert("Emails do not match");
+      return;
+    }
     const redirectTo = Linking.createURL('update-password');
     const { error } = await supabase.auth.resetPasswordForEmail(email, { redirectTo });
     if (error) {
