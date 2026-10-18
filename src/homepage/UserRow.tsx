@@ -7,11 +7,12 @@ import { styles } from './styles';
 import { label } from '../label';
 import { ROW_SLOTS } from './feed';
 import { ItemThumbnail, MoreTile } from './ItemThumbnail';
+import type { FeedProfile } from '../types';
 
 const SIDE_PADDING = 16; // matches paddingHorizontal in styles.content
 const TILE_GAP = 8; // matches gap in styles.tiles
 
-export function UserRow({ profile }) {
+export function UserRow({ profile }: { profile: FeedProfile }) {
   const router = useRouter();
   const { width } = useWindowDimensions();
 

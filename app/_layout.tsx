@@ -13,6 +13,9 @@ import { supabase } from '../src/supabase';
 // Keep the splash screen up until fonts are ready, so text never flashes in the system font
 SplashScreen.preventAutoHideAsync();
 
+// Query params can be a string, an array of strings, or missing. Take the first string.
+const first = (v: string | string[] | undefined) => (Array.isArray(v) ? v[0] : v);
+
 export default function Layout() {
   const [fontsLoaded, fontError] = useFonts({
     DMSans_400Regular,
@@ -24,26 +27,26 @@ export default function Layout() {
     if (fontsLoaded || fontError) SplashScreen.hideAsync();
   }, [fontsLoaded, fontError]);
 
-  useEffect(() => {
-    if (fontsLoaded || fontError) SplashScreen.hideAsync();
-  }, [fontsLoaded, fontError]);
-
   // Catch auth deep links (password reset) no matter which screen is showing
   useEffect(() => {
-    async function handle(incomingUrl) {
+    async function handle(incomingUrl: string | null) {
       if (!incomingUrl) return;
-      console.log('Deep link received:', incomingUrl);
 
       const normalized = incomingUrl.includes('#')
         ? incomingUrl.replace('#', incomingUrl.includes('?') ? '&' : '?')
         : incomingUrl;
       const { queryParams } = Linking.parse(normalized);
-      const { code, access_token, refresh_token } = queryParams ?? {};
+
+      const code = first(queryParams?.code);
+      const access_token = first(queryParams?.access_token);
+      const refresh_token = first(queryParams?.refresh_token);
 
       if (code) {
-        await supabase.auth.exchangeCodeForSession(code);
+        const { error } = await supabase.auth.exchangeCodeForSession(code);
+        if (error) console.log('Code exchange failed:', error.message);
       } else if (access_token && refresh_token) {
-        await supabase.auth.setSession({ access_token, refresh_token });
+        const { error } = await supabase.auth.setSession({ access_token, refresh_token });
+        if (error) console.log('Set session failed:', error.message);
       }
     }
 
@@ -55,6 +58,6 @@ export default function Layout() {
   if (!fontsLoaded && !fontError) return null;
 
   return (
-    <Stack screenOptions={{ animation: 'none', headerShown: false }} /> // for the time being of testing, the animation on this is going to be none. lowkey i want elliot to deal with the animations icl
+    <Stack screenOptions={{ animation: 'none', headerShown: false }} />
   );
 }

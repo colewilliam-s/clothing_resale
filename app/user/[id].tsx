@@ -7,11 +7,13 @@ import { FlatList, Text, Pressable, ActivityIndicator } from 'react-native';
 import { Stack, useLocalSearchParams, useRouter } from 'expo-router';
 import { supabase } from '../../src/supabase';
 import { label } from '../../src/label';
+import type { ProfileWithListings } from '../../src/types';
 
 export default function UserProfile() {
-  const { id } = useLocalSearchParams();
+  const { id: rawId } = useLocalSearchParams<{ id: string }>();
+  const id = Array.isArray(rawId) ? rawId[0] : rawId;
   const router = useRouter();
-  const [profile, setProfile] = useState(null);
+  const [profile, setProfile] = useState<ProfileWithListings | null>(null);
   const [error, setError] = useState('');
 
   useEffect(() => {

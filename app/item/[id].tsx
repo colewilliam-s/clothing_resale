@@ -7,12 +7,14 @@ import { ScrollView, View, Text, Image, Pressable, ActivityIndicator } from 'rea
 import { Stack, useLocalSearchParams, useRouter } from 'expo-router';
 import { supabase } from '../../src/supabase';
 import { label } from '../../src/label';
+import type { Listing, ProfileWithListings } from '../../src/types';
 
 export default function ItemDetail() {
   const { id } = useLocalSearchParams();
   const router = useRouter();
-  const [listing, setListing] = useState(null);
+  const [listing, setListing] = useState<Listing | null>(null);
   const [error, setError] = useState('');
+  const [profile, setProfile] = useState<ProfileWithListings | null>(null);
 
   useEffect(() => {
     supabase

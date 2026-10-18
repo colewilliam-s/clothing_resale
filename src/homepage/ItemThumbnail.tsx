@@ -2,8 +2,15 @@
 
 import { Pressable, Image, View, Text, StyleSheet } from 'react-native';
 import { styles } from './styles';
+import type { Listing } from '../types';
 
-export function ItemThumbnail({ listing, size, onPress }) {
+type ThumbnailProps = {
+  listing: Pick<Listing, 'image_url' | 'status'>;
+  size: number;
+  onPress: () => void;
+};
+
+export function ItemThumbnail({ listing, size, onPress }: ThumbnailProps) {
   return (
     <Pressable onPress={onPress} style={[styles.tile, { width: size, height: size }]}>
       {listing.image_url ? (
@@ -18,7 +25,7 @@ export function ItemThumbnail({ listing, size, onPress }) {
   );
 }
 
-export function MoreTile({ size, onPress }) {
+export function MoreTile({ size, onPress }: { size: number; onPress: () => void }) {
   return (
     <Pressable onPress={onPress} style={[styles.tile, styles.moreTile, { width: size, height: size }]}>
       <Text style={styles.moreText}>...</Text>
