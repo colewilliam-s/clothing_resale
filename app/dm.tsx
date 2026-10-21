@@ -6,6 +6,7 @@ import {
   KeyboardAvoidingView, Platform,
 } from 'react-native';
 import { label } from '../src/label';
+import { Link, useRouter, Stack } from 'expo-router';
 import type { Profile, Message } from '../src/types';
 import { supabase } from '../src/supabase';
 
@@ -17,6 +18,7 @@ export default function DM() {
   const [messages, setMessages] = useState<Message[]>([]); // newest first
   const [text, setText] = useState('');
   const [error, setError] = useState('');
+  const router = useRouter();
 
   // Load the signed-in user and everyone else
   useEffect(() => {
@@ -92,7 +94,10 @@ export default function DM() {
   // Screen 1: pick someone to message
   if (!convId) {
     return (
-      <View style={{ flex: 1, padding: 20 }}>
+      <View style={{ flex: 1, padding: 20, marginTop: '10%' }}>
+        <Pressable onPress={() => {router.replace('../(tabs)/homepage')}}>
+          <Text>Back to home page</Text>
+        </Pressable>
         <Text style={{ fontSize: 20, marginBottom: 10 }}>Message someone</Text>
         {error ? <Text style={{ color: 'red' }}>{error}</Text> : null}
         <FlatList
@@ -116,7 +121,7 @@ export default function DM() {
       behavior={Platform.OS === 'ios' ? 'padding' : undefined}
       keyboardVerticalOffset={90}
     >
-      <View style={{ padding: 12, flexDirection: 'row', gap: 12 }}>
+      <View style={{ padding: 12, flexDirection: 'row', gap: 12, marginTop: '10%' }}>
         <Pressable onPress={() => setConvId(null)}><Text>‹ Back</Text></Pressable>
         <Text>{otherName}</Text>
       </View>
