@@ -9,6 +9,7 @@ export type AuthResult = { ok: true } | { ok: false; message: string };
 WebBrowser.maybeCompleteAuthSession();
 
 export async function signInWithMicrosoft(): Promise<AuthResult> {
+  // Creating a variable for link redirection (also just testing out neovim as a code editor, so fake commit here lowkey
   const redirectTo = Linking.createURL('auth-callback');
   console.log('reDirectTo:', redirectTo);
 
