@@ -1,3 +1,7 @@
+-- i lowkey am a little too scared to over comment this file. a lot of things, like policies, really just explain themselves if you look at them for more than two seconds. i don't think it's necessary to use more comments than clearly needed, but if i'm wrong please let me know
+-- :D
+
+-- creating the profiles inside the database
 create table public.profiles (
   id uuid primary key references auth.users(id) on delete cascade,
   display_name text,
@@ -7,9 +11,11 @@ create table public.profiles (
 
 alter table public.profiles enable row level security;
 
+-- allowing signed in users to view other profiles
 create policy "Signed-in users can view profiles"
   on public.profiles for select to authenticated using (true);
 
+-- allowing users to make changes to their profile
 create policy "Users can update their own profile"
   on public.profiles for update to authenticated
   using (auth.uid() = id) with check (auth.uid() = id);
@@ -60,6 +66,7 @@ create policy "Sellers manage their own listings"
   on public.listings for all to authenticated
   using (auth.uid() = seller_id) with check (auth.uid() = seller_id);
 
+-- creating the conversation table inside of the database
 create table public.conversations (
   id uuid primary key default gen_random_uuid(),
   listing_id uuid references public.listings(id) on delete set null,
@@ -67,6 +74,7 @@ create table public.conversations (
   last_message_at timestamptz default now()
 );
 
+-- creating the table for the conversation participants inside the database
 create table public.conversation_participants (
   conversation_id uuid references public.conversations(id) on delete cascade,
   user_id uuid references public.profiles(id) on delete cascade,
@@ -81,6 +89,7 @@ create table public.messages (
   created_at timestamptz default now()
 );
 
+-- recent indexing on messages and or conversations
 create index on public.messages (conversation_id, created_at desc);
 create index on public.conversation_participants (user_id);
 
