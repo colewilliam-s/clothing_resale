@@ -5,24 +5,29 @@ import { Text, View, TextInput, ScrollView, Pressable } from 'react-native';
 import { Link, useRouter, Stack } from 'expo-router';
 import { verify } from '../src/login_page/verification';
 import { signInWithMicrosoft } from '../src/login_page/microsoftLogin';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
 
 export default function LoginPage() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const router = useRouter();
   const [error, setError] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
+  const toggleShowPassword = () => {
+    setShowPassword(!showPassword);
+  }
 
   return (
     <>
-      <Stack.Screen options={{headerBackVisible: false}}/>
-      <ScrollView 
+      <Stack.Screen options={{ headerBackVisible: false }} />
+      <ScrollView
         style={styles.container}
         keyboardDismissMode='on-drag'
         keyboardShouldPersistTaps='handled'
       >
         <Text style={styles.header}>ThryftShyft</Text>
         <View style={styles.login}>
-          <TextInput 
+          <TextInput
             style={styles.emailInput}
             placeholder='Email'
             value={email}
@@ -30,28 +35,43 @@ export default function LoginPage() {
             keyboardType='email-address'
             autoCapitalize='none'
           />
-          <TextInput 
-            style={styles.passwordInput}
-            placeholder='Password'
-            value={password}
-            onChangeText={setPassword}
-            secureTextEntry
-          />
+          <View style={styles.passwordWrapper}>
+            <TextInput
+              style={styles.passwordInput}
+              placeholder='Password'
+              value={password}
+              onChangeText={setPassword}
+              secureTextEntry={!showPassword}
+              autoCapitalize='none'
+              autoCorrect={false}
+            />
+            <Pressable
+              style={styles.icon}
+              onPress={toggleShowPassword}
+              hitSlop={10}
+            >
+              <MaterialCommunityIcons
+                name={showPassword ? 'eye-off' : 'eye'}
+                size={24}
+                color="#aaa"
+              />
+            </Pressable>
+          </View>
         </View>
         <Pressable
-          style={({pressed}) => [
+          style={({ pressed }) => [
             styles.button,
             pressed && styles.buttonPressed
           ]}
           onPress={async () => {
             const ok = await verify(email, password);
-            if(ok) router.replace('/homepage');
+            if (ok) router.replace('/homepage');
           }}
         >
           <Text style={styles.buttonText}>Login</Text>
         </Pressable>
         <Pressable
-          style={({pressed}) => [
+          style={({ pressed }) => [
             styles.button,
             pressed && styles.buttonPressed
           ]}

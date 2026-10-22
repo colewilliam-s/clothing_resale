@@ -26,19 +26,21 @@ export const styles = StyleSheet.create({
     borderWidth: 2,
     borderRadius: 6,
     width: '65%',
-    height: '17%',
+    height: 45,
     textAlign: 'left',
     paddingLeft: 10,
     fontSize: 20
   },
   passwordInput: {
     borderBlockColor: '#000',
+    textDecorationColor: '#000',
     alignSelf: 'center',
     borderWidth: 2,
     borderRadius: 6,
     width: '65%',
     marginTop: '12.5%',
-    height: '17%',
+    marginBottom: 65,
+    height: 45,
     textAlign: 'left',
     paddingLeft: 10,
     fontSize: 20
@@ -68,9 +70,18 @@ export const styles = StyleSheet.create({
     fontSize: 20
   },
   homePageContainer: {
-    
+
   },
   homePageText: {
     paddingTop: '10%'
-  }
+  },
+  icon: {
+    position: 'absolute',
+    right: '17.5%',
+    marginRight: 10,
+    bottom: 75.5,
+  },
+  passwordWrapper: {
+    width: '100%'
+  },
 });
