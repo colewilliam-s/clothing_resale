@@ -9,6 +9,7 @@ import { label } from '../src/label';
 import { Link, useRouter, Stack } from 'expo-router';
 import type { Profile, Message } from '../src/types';
 import { supabase } from '../src/supabase';
+import { styles } from '../src/homepage/styles';
 
 export default function DM() {
   const [userId, setUserId] = useState<string | null>(null);
@@ -95,11 +96,17 @@ export default function DM() {
   if (!convId) {
     return (
       <View style={{ flex: 1, padding: 20, marginTop: '10%' }}>
-        <Pressable 
-		onPress={() => {router.replace('../(tabs)/homepage')}}
-		style={{ backgroundColor: 'FFC0CB', borderRadius: 8 }}
-	>
-          <Text>Back to home page</Text>
+        <Pressable
+          onPress={() => { router.replace('../(tabs)/homepage') }}
+          style={({ pressed }) => [
+            styles.backButton,
+            pressed && styles.backButtonPressed
+          ]}
+        >
+          <Text
+            style={styles.backButtonText}
+          >&lt; Back to home page
+          </Text>
         </Pressable>
         <Text style={{ fontSize: 20, marginBottom: 10, marginTop: 10, fontWeight: 'bold' }}>Message someone</Text>
         {error ? <Text style={{ color: 'red' }}>{error}</Text> : null}
@@ -125,7 +132,15 @@ export default function DM() {
       keyboardVerticalOffset={90}
     >
       <View style={{ padding: 12, flexDirection: 'row', gap: 12, marginTop: '10%' }}>
-        <Pressable onPress={() => setConvId(null)}><Text>‹ Back</Text></Pressable>
+        <Pressable 
+          onPress={() => setConvId(null)}
+          style={({ pressed }) => [
+            styles.textBackButton,
+            pressed && styles.backButtonPressed
+          ]}
+        ><Text
+          style={styles.backButtonText}
+        >&lt; Back</Text></Pressable>
         <Text>{otherName}</Text>
       </View>
       {error ? <Text style={{ color: 'red', paddingHorizontal: 12 }}>{error}</Text> : null}

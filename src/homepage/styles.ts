@@ -81,4 +81,25 @@ export const styles = StyleSheet.create({
     fontSize: 16,
     fontFamily: 'DMSans_700Bold',
   },
+  backButton: {
+    backgroundColor: '#c0bdc1',
+    paddingVertical: 13,
+    borderRadius: 8,
+    width: '45%',
+    margin: 3,
+  },
+  backButtonText: {
+    textAlign: 'center',
+    fontWeight: 800
+  },
+  backButtonPressed: {
+    opacity: 0.7
+  },
+  textBackButton: {
+    backgroundColor: '#c0bdc1',
+    paddingVertical: 13,
+    borderRadius: 8,
+    width: '15%',
+    margin: 3,
+  }
 });
