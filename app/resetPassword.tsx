@@ -11,7 +11,7 @@ export default function passwordReset() {
   const router = useRouter();
 
   async function handleReset() {
-    if (email !== confirmEmail) {
+    if (email.toLowerCase() !== confirmEmail.toLowerCase()) {
       setEmail('');
       setConfirmEmail('');
       alert("Emails do not match");
