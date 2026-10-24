@@ -95,10 +95,13 @@ export default function DM() {
   if (!convId) {
     return (
       <View style={{ flex: 1, padding: 20, marginTop: '10%' }}>
-        <Pressable onPress={() => {router.replace('../(tabs)/homepage')}}>
+        <Pressable 
+		onPress={() => {router.replace('../(tabs)/homepage')}}
+		style={{ backgroundColor: 'FFC0CB', borderRadius: 8 }}
+	>
           <Text>Back to home page</Text>
         </Pressable>
-        <Text style={{ fontSize: 20, marginBottom: 10 }}>Message someone</Text>
+        <Text style={{ fontSize: 20, marginBottom: 10, marginTop: 10, fontWeight: 'bold' }}>Message someone</Text>
         {error ? <Text style={{ color: 'red' }}>{error}</Text> : null}
         <FlatList
           data={people}
