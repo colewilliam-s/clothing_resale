@@ -6,17 +6,24 @@ import { supabase } from '../src/supabase';
 import * as Linking from 'expo-linking';
 
 export default function passwordReset() {
+  // variables
   const [email, setEmail] = useState('');
   const [confirmEmail, setConfirmEmail] = useState(''); //trying to get an email check going inside of the resetpassword file
   const router = useRouter();
 
   async function handleReset() {
-    if (email.toLowerCase() !== confirmEmail.toLowerCase()) {
+    // turning the emails into lowercase
+    const cleanEmail = email.trim().toLowerCase();
+    const cleanConfirmEmail = confirmEmail.trim().toLowerCase();
+
+    // checking the emails and making, and if false, set them to nothing so it resets the text box
+    if (cleanEmail !== cleanConfirmEmail) {
       setEmail('');
       setConfirmEmail('');
       alert("Emails do not match");
       return;
     }
+
     const redirectTo = Linking.createURL('update-password');
     const { error } = await supabase.auth.resetPasswordForEmail(email, { redirectTo });
     if (error) {
