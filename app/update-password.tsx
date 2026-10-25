@@ -5,6 +5,7 @@ import { supabase } from '../src/supabase';
 import { styles } from '../src/styling/updatePassStyles';
 
 export default function UpdatePassword() {
+  // variables
   const router = useRouter();
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
@@ -27,6 +28,8 @@ export default function UpdatePassword() {
       alert("Passwords do not match!");
       return;
     }
+
+    // updating the password inside of the database
     const { error } = await supabase.auth.updateUser({ password });
     if (error) {
       alert(error.message);
@@ -36,7 +39,22 @@ export default function UpdatePassword() {
     router.replace('/');
   }
 
-  if (!ready) return <Text>Verifying link...</Text>;
+  // failsafe page
+  if (!ready) {
+    return (
+      <>
+        <ScrollView 
+          style={styles.container}
+          contentContainerStyle={styles.contentContainer}
+        >
+          <Text style={styles.verifyLinkText}>Verifying link...</Text>
+          <Pressable style={styles.verifyButton} onPress={() => {router.replace('/')}}>
+            <Text style={styles.buttonText}>Return to homepage</Text>
+          </Pressable>
+        </ScrollView>
+      </>
+    )
+  };
 
   return (
     <ScrollView

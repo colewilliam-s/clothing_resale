@@ -34,4 +34,14 @@ export const styles = StyleSheet.create({
     color: '#fff',
     textAlign: 'center',
   },
+  verifyLinkText: {
+    marginTop: '15%'
+  },
+  verifyButton: {
+    paddingVertical: 12,
+    paddingHorizontal: 24,
+    borderRadius: 8,
+    width: '50%',
+    backgroundColor: '#007AFF',
+  },
 });
