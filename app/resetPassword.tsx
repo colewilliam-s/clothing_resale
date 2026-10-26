@@ -12,25 +12,22 @@ export default function passwordReset() {
   const router = useRouter();
 
   async function handleReset() {
-    // turning the emails into lowercase
-    const cleanEmail = email.trim().toLowerCase();
-    const cleanConfirmEmail = confirmEmail.trim().toLowerCase();
-
-    // checking the emails and making, and if false, set them to nothing so it resets the text box
-    if (cleanEmail !== cleanConfirmEmail) {
-      setEmail('');
-      setConfirmEmail('');
-      alert("Emails do not match");
+    // checking the emails and making, and if false, set them to nothing so it resets the text box. also setting the emails to lowercase for the if statement
+    if (email.trim().toLowerCase !== confirmEmail.trim().toLowerCase()) {
+      setEmail(''); // set email to blank
+      setConfirmEmail(''); // set the confirmEmail to blank
+      alert("Emails do not match. Please re-enter and try again");
       return;
     }
 
     const redirectTo = Linking.createURL('update-password');
-    const { error } = await supabase.auth.resetPasswordForEmail(email, { redirectTo });
+    const { error } = await supabase.auth.resetPasswordForEmail(email, { redirectTo }); // using supabase/resend to send a confirmation email over to the user
+    // even if the emails match, the link only gets sent if the email actually exists inside of the database
     if (error) {
       alert(error.message);
       return;
     }
-    alert('If that email exists, a reset link is on its way.');
+    alert('A link to reset your password is on its way.');
     router.back();
   }
 
