@@ -11,6 +11,7 @@ export default function UpdatePassword() {
   const [confirmPassword, setConfirmPassword] = useState('');
   const [ready, setReady] = useState(false);
 
+  // supabase actions
   useEffect(() => {
     supabase.auth.getSession().then(({ data }) => {
       if (data.session) setReady(true);
@@ -23,8 +24,8 @@ export default function UpdatePassword() {
 
   async function handleUpdate() {
     if (password !== confirmPassword){
-      setPassword('');
-      setConfirmPassword('');
+      setPassword(''); // setting the password input to blank if the passwords don't match
+      setConfirmPassword(''); // setting the confirmPassword to blank if the passwords don't match
       alert("Passwords do not match!");
       return;
     }
