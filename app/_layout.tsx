@@ -15,6 +15,7 @@ SplashScreen.preventAutoHideAsync();
 
 const first = (v: string | string[] | undefined) => (Array.isArray(v) ? v[0] : v);
 
+// fonts
 export default function Layout() {
   const [fontsLoaded, fontError] = useFonts({
     DMSans_400Regular,
@@ -22,6 +23,7 @@ export default function Layout() {
     DMSans_700Bold,
   });
 
+  // constants
   const [session, setSession] = useState<Session | null>(null);
   const [authReady, setAuthReady] = useState(false);
   const segments = useSegments();
@@ -39,6 +41,7 @@ export default function Layout() {
     return () => subscription.unsubscribe();
   }, []);
 
+  // loading the fonts
   const ready = (fontsLoaded || !!fontError) && authReady;
 
   useEffect(() => {
