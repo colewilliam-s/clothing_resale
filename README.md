@@ -1,3 +1,22 @@
+# instructions for professor and TA
+i already mentioned it later down in the readme, but i just did some updates so i'm re-writing it up here.
+
+## running the app
+we're using expo go for our compiler, so in the terminal you wanna make sure that you are not only logged into expo go by using
+```
+npx expo login
+```
+but then start it by either doing
+```
+npx expo start
+```
+or
+```
+npx expo start -c
+```
+some of this stuff may be wrong, but if you have any questions on compiling it (mainly because i've been doing development with my phone, and didn't need to update anything concerning expo cause i held off on updating xcode and my laptop), please let me know. i promise it compiles, i was just stubborn about expo go for a little bit
+## 
+
 # Clothing Resale Project
 ## Requirements per the class
 - Facilitates resale of second-hand clothing
