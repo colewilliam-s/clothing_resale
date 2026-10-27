@@ -1,5 +1,10 @@
 # instructions for professor and TA
 i already mentioned it later down in the readme, but i just did some updates so i'm re-writing it up here.
+also, here is the information needed for your .env file which goes in the root of the project
+```
+EXPO_PUBLIC_SUPABASE_URL=https://ijvbghtoaqphfcnhjjea.supabase.co
+EXPO_PUBLIC_SUPABASE_KEY=sb_publishable_DG34zA2t3PFRSRyH-l5uSQ_EKp_933O
+```
 
 ## running the app
 we're using expo go for our compiler, so in the terminal you wanna make sure that you are not only logged into expo go by using
