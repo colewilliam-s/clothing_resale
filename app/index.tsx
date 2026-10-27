@@ -85,7 +85,7 @@ export default function LoginPage() {
             }
           }}
         >
-          <Text style={styles.buttonText}>Login with UVM SSO</Text>
+          <Text style={styles.buttonText}>University Login</Text>
         </Pressable>
         <Link
           style={styles.passReset}
