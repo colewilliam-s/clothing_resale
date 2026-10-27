@@ -1,5 +1,5 @@
-import { useEffect } from 'react';
-import { Stack } from 'expo-router';
+import { useEffect, useState } from 'react';
+import { Stack, useRouter, useSegments } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
 import * as Linking from 'expo-linking';
 import {
@@ -8,12 +8,11 @@ import {
   DMSans_500Medium,
   DMSans_700Bold,
 } from '@expo-google-fonts/dm-sans';
+import type { Session } from '@supabase/supabase-js';
 import { supabase } from '../src/supabase';
 
-// Keep the splash screen up until fonts are ready, so text never flashes in the system font
 SplashScreen.preventAutoHideAsync();
 
-// Query params can be a string, an array of strings, or missing. Take the first string.
 const first = (v: string | string[] | undefined) => (Array.isArray(v) ? v[0] : v);
 
 export default function Layout() {
@@ -23,9 +22,43 @@ export default function Layout() {
     DMSans_700Bold,
   });
 
+  const [session, setSession] = useState<Session | null>(null);
+  const [authReady, setAuthReady] = useState(false);
+  const segments = useSegments();
+  const router = useRouter();
+
+  // Load the saved session on startup, then keep it in sync
   useEffect(() => {
-    if (fontsLoaded || fontError) SplashScreen.hideAsync();
-  }, [fontsLoaded, fontError]);
+    supabase.auth.getSession().then(({ data }) => {
+      setSession(data.session);
+      setAuthReady(true);
+    });
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, s) => {
+      setSession(s);
+    });
+    return () => subscription.unsubscribe();
+  }, []);
+
+  const ready = (fontsLoaded || !!fontError) && authReady;
+
+  useEffect(() => {
+    if (ready) SplashScreen.hideAsync();
+  }, [ready]);
+
+  // Redirects
+  useEffect(() => {
+    if (!ready) return;
+
+    const route = segments[0] as string | undefined; // undefined = the login page (index)
+    const isLoginOrSignup = route === undefined || route === 'signup';
+    const isPublic = isLoginOrSignup || route === 'resetPassword';
+
+    if (session && isLoginOrSignup) {
+      router.replace('/homepage');
+    } else if (!session && !isPublic) {
+      router.replace('/');
+    }
+  }, [ready, session, segments]);
 
   // Catch auth deep links (password reset) no matter which screen is showing
   useEffect(() => {
@@ -55,9 +88,7 @@ export default function Layout() {
     return () => sub.remove();
   }, []);
 
-  if (!fontsLoaded && !fontError) return null;
+  if (!ready) return null;
 
-  return (
-    <Stack screenOptions={{ animation: 'none', headerShown: false }} />
-  );
+  return <Stack screenOptions={{ animation: 'none', headerShown: false }} />;
 }
