@@ -1,25 +1,12 @@
-import { View, Text, Pressable } from 'react-native';
-import { useRouter } from 'expo-router';
-import { supabase } from '../../src/supabase';
+import { useSession } from '../../src/session/SessionProvider';
+import { ProfileView } from '../../src/profile/ProfileView';
 
-// Placeholder: the Profile tab isn't designed yet.
-// Log Out moved here from the old home page. It now actually signs out of Supabase,
-// instead of only going back to the login screen while the session stays alive.
-
+//Profile tab: shows the logged in user's own profile using the shared ProfileView
 export default function Profile() {
-  const router = useRouter();
+  const { session } = useSession();
 
-  async function logOut() {
-    await supabase.auth.signOut();
-    router.replace('/');
-  }
+  // briefly empty while logging out, before app/_layout.tsx moves to the login screen
+  if (!session) return null;
 
-  return (
-    <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', gap: 16 }}>
-      <Text>Profile: coming soon</Text>
-      <Pressable onPress={logOut}>
-        <Text style={{ textDecorationLine: 'underline' }}>Log Out</Text>
-      </Pressable>
-    </View>
-  );
+  return <ProfileView userId={session.user.id} isOwn />;
 }

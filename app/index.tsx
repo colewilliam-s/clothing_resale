@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { StatusBar } from 'expo-status-bar';
 import { styles } from '../src/login_page/styles';
 import { Text, View, TextInput, ScrollView, Pressable } from 'react-native';
-import { Link, useRouter, Stack } from 'expo-router';
+import { Link, Stack } from 'expo-router';
 import { verify } from '../src/login_page/verification';
 import { signInWithMicrosoft } from '../src/login_page/microsoftLogin';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
@@ -10,7 +10,6 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 export default function LoginPage() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const router = useRouter();
   const [error, setError] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const toggleShowPassword = () => {
@@ -64,8 +63,8 @@ export default function LoginPage() {
             pressed && styles.buttonPressed
           ]}
           onPress={async () => {
-            const ok = await verify(email, password);
-            if (ok) router.replace('/homepage');
+            // once logged in, app/_layout.tsx sends the user to the feed or profile setup
+            await verify(email, password);
           }}
         >
           <Text style={styles.buttonText}>Login</Text>
@@ -78,14 +77,10 @@ export default function LoginPage() {
           onPress={async () => {
             const r = await signInWithMicrosoft();
 
-            if (r.ok) {
-              router.replace('/homepage');
-            } else {
-              setError(r.message ?? 'Sign-in failed');
-            }
+            if (!r.ok) setError(r.message ?? 'Sign-in failed');
           }}
         >
-          <Text style={styles.buttonText}>University Login</Text>
+          <Text style={styles.buttonText}>Login with UVM SSO</Text>
         </Pressable>
         <Link
           style={styles.passReset}
