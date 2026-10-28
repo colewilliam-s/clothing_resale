@@ -23,7 +23,6 @@
       "expo-font",
       "expo-secure-store",
       "expo-splash-screen",
-      "expo-status-bar",
       ["expo-build-properties", { "ios": { "enableSceneSupport": true } }]
     ]
   }
