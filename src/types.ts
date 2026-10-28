@@ -7,6 +7,20 @@ export type Profile = {
   university_domain: string | null;
 };
 
+// The rest of a profile, shown on profile pages and filled in during setup
+export type ProfileDetails = Profile & {
+  major: string | null;
+  class_year: number | null;
+  avatar_url: string | null;
+};
+
+// First and last name, kept in their own table so they can stay private
+export type ProfileNames = {
+  first_name: string | null;
+  last_name: string | null;
+  show_full_name: boolean;
+};
+
 // Listing variables
 export type Listing = {
   id: string;
@@ -34,6 +48,12 @@ export type Message = {
 // All of the listings that pertain to a specific users profile, as well as overarching variables
 export type ProfileWithListings = Profile & {
   listings: Pick<Listing, 'id' | 'title' | 'price' | 'status' | 'created_at'>[];
+};
+
+// Everything a profile page shows: details, names (null when hidden), and the listings grid
+export type ProfilePageData = ProfileDetails & {
+  profile_names: ProfileNames | null;
+  listings: Pick<Listing, 'id' | 'image_url' | 'status' | 'created_at'>[];
 };
 
 // Giving the user information about the current listing/profile they are looking at
