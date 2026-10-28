@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { Stack, useRouter, useSegments } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
 import * as Linking from 'expo-linking';
@@ -8,60 +8,29 @@ import {
   DMSans_500Medium,
   DMSans_700Bold,
 } from '@expo-google-fonts/dm-sans';
-import type { Session } from '@supabase/supabase-js';
 import { supabase } from '../src/supabase';
+import { SessionProvider, useSession } from '../src/session/SessionProvider';
+import { isProfileComplete } from '../src/profile/api';
 
+// Keep the splash screen up until fonts are ready and we know who is logged in
 SplashScreen.preventAutoHideAsync();
 
+// Query params can be a string, an array of strings, or missing. Take the first string.
 const first = (v: string | string[] | undefined) => (Array.isArray(v) ? v[0] : v);
 
-// fonts
+// Screens for people who are logged out. Logged-in users get sent past them.
+const LOGGED_OUT_SCREENS = ['index', 'signup', 'resetPassword'];
+
+// Screens anyone can be on. A password reset link logs the user in,
+// so update-password must not redirect them before they finish.
+const OPEN_SCREENS = ['update-password'];
+
 export default function Layout() {
   const [fontsLoaded, fontError] = useFonts({
     DMSans_400Regular,
     DMSans_500Medium,
     DMSans_700Bold,
   });
-
-  // constants
-  const [session, setSession] = useState<Session | null>(null);
-  const [authReady, setAuthReady] = useState(false);
-  const segments = useSegments();
-  const router = useRouter();
-
-  // Load the saved session on startup, then keep it in sync
-  useEffect(() => {
-    supabase.auth.getSession().then(({ data }) => {
-      setSession(data.session);
-      setAuthReady(true);
-    });
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, s) => {
-      setSession(s);
-    });
-    return () => subscription.unsubscribe();
-  }, []);
-
-  // loading the fonts
-  const ready = (fontsLoaded || !!fontError) && authReady;
-
-  useEffect(() => {
-    if (ready) SplashScreen.hideAsync();
-  }, [ready]);
-
-  // Redirects
-  useEffect(() => {
-    if (!ready) return;
-
-    const route = segments[0] as string | undefined; // undefined = the login page (index)
-    const isLoginOrSignup = route === undefined || route === 'signup';
-    const isPublic = isLoginOrSignup || route === 'resetPassword';
-
-    if (session && isLoginOrSignup) {
-      router.replace('/homepage');
-    } else if (!session && !isPublic) {
-      router.replace('/');
-    }
-  }, [ready, session, segments]);
 
   // Catch auth deep links (password reset) no matter which screen is showing
   useEffect(() => {
@@ -91,7 +60,43 @@ export default function Layout() {
     return () => sub.remove();
   }, []);
 
-  if (!ready) return null;
+  return (
+    <SessionProvider>
+      <RootNavigator fontsReady={fontsLoaded || !!fontError} />
+    </SessionProvider>
+  );
+}
 
-  return <Stack screenOptions={{ animation: 'none', headerShown: false }} />;
+// Sends people to the right place: login when logged out, profile setup when
+// their profile isn't finished, and the app once it is.
+function RootNavigator({ fontsReady }: { fontsReady: boolean }) {
+  const { session, profile, initialized, loading } = useSession();
+  const segments = useSegments() as string[];
+  const router = useRouter();
+
+  useEffect(() => {
+    if (fontsReady && initialized) SplashScreen.hideAsync();
+  }, [fontsReady, initialized]);
+
+  useEffect(() => {
+    if (!initialized || loading) return;
+
+    const screen = segments[0] ?? 'index';
+    if (OPEN_SCREENS.includes(screen)) return;
+    const onLoggedOutScreen = LOGGED_OUT_SCREENS.includes(screen);
+
+    if (!session) {
+      if (!onLoggedOutScreen) router.replace('/');
+    } else if (!isProfileComplete(profile)) {
+      if (screen !== 'setup-profile') router.replace('/setup-profile');
+    } else if (onLoggedOutScreen || screen === 'setup-profile') {
+      router.replace('/homepage');
+    }
+  }, [initialized, loading, session, profile, segments, router]);
+
+  if (!fontsReady || !initialized) return null;
+
+  return (
+    <Stack screenOptions={{ animation: 'none', headerShown: false }} />
+  );
 }
