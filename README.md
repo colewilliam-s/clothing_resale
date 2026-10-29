@@ -47,14 +47,25 @@ Whenever you want to push something to the database, make sure you have supabase
 ```
 npm install supabase --save-dev
 ```
+<br><br>
 After you run this, go to supabase.com, link your github account and create it. Then, after you have account, run and follow the steps of 
+<br><br>
 ```
 npx supabase login
 ```
 Assuming you're added to the DB at this time, whenever you make a change to it, use this command to push changes to the DB
+<br><br>
 ```
 npx supabase db push
 ```
+<br><br>
+Whenever you are behind on commits, or you don't have all the necessary supabase migrations (and assuming you are logged in), make sure in the terminal to run
+<br><br>
+```
+npx supabase migration fetch
+```
+\
+When it asks you to overwrite existing files in the supabase/migration directory, unless you are **actively** working on a migration/schema, you should do this after any supabase change is made.
 
 ## Testing the password reset/resetting your password
 In order to reset your password (at least on iOS, not really sure how it would work on an android simulator), you're going to get sent a link to your UVM email on outlook to handle the password reset. Copy and paste that link into Safari, and you'll get a prompt to open the page on the compiled app.
