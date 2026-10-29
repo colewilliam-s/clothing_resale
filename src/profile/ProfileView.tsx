@@ -63,8 +63,8 @@ export function ProfileView({ userId, isOwn }: Props) {
   const header = (
     <View style={styles.header}>
       <Avatar uri={profile.avatar_url} size={96} />
-      <Text style={styles.displayName}>{profile.display_name}</Text>
-      {fullName ? <Text style={styles.fullName}>{fullName}</Text> : null}
+      <Text style={styles.displayName}>{fullName}</Text>
+      {fullName ? <Text style={styles.fullName}>@{profile.display_name?.toLowerCase()}</Text> : null}
       {profile.class_year ? <Text style={styles.detail}>Class of {profile.class_year}</Text> : null}
       {profile.major ? <Text style={styles.detail}>{profile.major}</Text> : null}
       {error ? <Text style={styles.error}>{error}</Text> : null}
