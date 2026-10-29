@@ -71,6 +71,8 @@ export function ProfileForm({ title, saveLabel, onSaved }: Props) {
     const year = Number(classYear);
 
     if (!displayName.trim()) return setError('Please enter a display name.');
+    if (!firstName.trim()) return setError('Please enter your first name.');
+    if (!classYear.trim()) return setError('Please set the year you are graduating');
     if (!/^\d{4}$/.test(classYear) || year < thisYear - 8 || year > thisYear + 8) {
       return setError('Please enter your class year, like 2028.');
     }
@@ -152,7 +154,7 @@ export function ProfileForm({ title, saveLabel, onSaved }: Props) {
         autoCapitalize='words'
       />
 
-      <Text style={styles.label}>First name (optional)</Text>
+      <Text style={styles.label}>First name</Text>
       <TextInput
         style={styles.input}
         value={firstName}
