@@ -13,7 +13,7 @@ export default function passwordReset() {
 
   async function handleReset() {
     // checking the emails and making, and if false, set them to nothing so it resets the text box. also setting the emails to lowercase for the if statement
-    if (email.trim().toLowerCase !== confirmEmail.trim().toLowerCase()) {
+    if (email.toLowerCase() !== confirmEmail.toLowerCase()) {
       setEmail(''); // set email to blank
       setConfirmEmail(''); // set the confirmEmail to blank
       alert("Emails do not match. Please re-enter and try again");
