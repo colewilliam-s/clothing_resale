@@ -50,8 +50,8 @@ export default function HomePage() {
       renderItem={({ item }) => <UserRow profile={item} />}
       refreshing={refreshing}
       onRefresh={onRefresh}
-      ListHeaderComponent={error ? <Text style={styles.error}>{error}</Text> : null}
-      ListEmptyComponent={!error ? <Text style={styles.empty}>No listings yet.</Text> : null} // placeholder wording
+      ListHeaderComponent={error ? <Text style={styles.error}>{error}</Text> : undefined}
+      ListEmptyComponent={!error ? <Text style={styles.empty}>No listings yet.</Text> : undefined} // placeholder wording
     />
   );
 }

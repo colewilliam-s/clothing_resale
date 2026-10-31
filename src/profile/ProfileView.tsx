@@ -99,7 +99,7 @@ export function ProfileView({ userId, isOwn }: Props) {
     <Pressable onPress={() => supabase.auth.signOut()} hitSlop={8}>
       <Text style={styles.linkText}>Log Out</Text>
     </Pressable>
-  ) : null;
+  ) : undefined;
 
   return (
     <FlatList
