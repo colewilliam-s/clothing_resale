@@ -35,6 +35,9 @@ export type Listing = {
   status: 'active' | 'sold';
   created_at: string;
   seller: Profile;
+  photo_url: string; // adding this because they are referenced directly inside of add_listing.tsx
+  brand: string; // adding this because they are referenced directly inside of add_listing.tsx
+  color: string | null; // adding this because they are referenced directly inside of add_listing.tsx
 };
 
 // Message variables

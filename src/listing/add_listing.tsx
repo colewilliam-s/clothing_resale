@@ -3,8 +3,11 @@ import { ScrollView, View, Text, TextInput, Pressable, Image } from 'react-nativ
 import * as ImagePicker from 'expo-image-picker';
 import { useSession } from '../session/SessionProvider';
 //idk
-import { createListing, updateListing, type PhotoChange, type Listing } from './api';
-import { styles } from './styles';
+// createListing, updateListing, and Listing aren't in ../profile/api
+import { type PhotoChange } from '../profile/api';
+import { type Listing } from '../types'
+// i created a styles file in the same directory just to get rid of the errors. further explained in the actual file
+import { styles } from '../listing/styles';
 
 type Props = {
   existing?: Listing;
@@ -71,19 +74,20 @@ export function ListingForm({ existing, saveLabel, onSaved }: Props) {
       title, description, price: priceNumber, category, size, condition, brand, color,
     };
 
-    setSaving(true);
-    try {
-      if (existing) {
-        await updateListing(existing.id, fields, photoChange, existing.photo_url ?? null);
-      } else {
-        await createListing(userId, fields, photoChange);
-      }
-      onSaved();
-    } catch (e) {
-      setError(e instanceof Error ? e.message : 'Could not save your listing.');
-    } finally {
-      setSaving(false);
-    }
+    // this logic doesn't work right now because we don't export any functions named updateListing or createListing
+    // setSaving(true);
+    // try {
+    //   if (existing) {
+    //     await updateListing(existing.id, fields, photoChange, existing.photo_url ?? null);
+    //   } else {
+    //     await createListing(userId, fields, photoChange);
+    //   }
+    //   onSaved();
+    // } catch (e) {
+    //   setError(e instanceof Error ? e.message : 'Could not save your listing.');
+    // } finally {
+    //   setSaving(false);
+    // }
   }
 
 
