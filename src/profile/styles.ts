@@ -40,15 +40,16 @@ export const styles = StyleSheet.create({
     gap: 4,
   },
   displayName: {
-    fontSize: 22,
+    fontSize: 15,
     color: '#111',
-    marginTop: 12,
     fontFamily: 'DMSans_700Bold',
   },
   fullName: {
-    fontSize: 15,
-    color: '#444',
+    fontSize: 22,
+    color: '#111',
     fontFamily: 'DMSans_500Medium',
+    fontWeight: 800,
+    marginTop: 12
   },
   detail: {
     fontSize: 14,
