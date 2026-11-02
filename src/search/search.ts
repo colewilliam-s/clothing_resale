@@ -1,6 +1,8 @@
 import { useState } from 'react';
 import { supabase } from '../supabase';
 
+const data = getProfile();
+
 interface Item { 
     name: string;
 }
@@ -9,6 +11,16 @@ interface Profile {
     id: string;
     display_name: string | null; // nullable inside the schema, since the column has no "not null"
 }
+
+// function List({ items }) {
+// 	return (
+// 		<table>
+// 			<tbody>
+				
+// 			</tbody>
+// 		</table>
+// 	)
+// }
 
 function filterItems(items: Item[], query: string): Item[] {
   query = query.toLowerCase();
@@ -38,8 +50,16 @@ async function getProfile(): Promise<Profile | null> {
 
 export function ProfileSearchList() {
     const [query, setQuery] = useState('');
-    const data = getProfile();
-    console.log(data);
+
+    // const filteredProfiles = filterItems(data, query);
+
+  //   return (
+	// <SearchBar query={ query } setQuery={ setQuery } />
+	// <hr />
+	// <List items={ filteredProfiles }>
+  //   )
+    
+    
 }
 
 ProfileSearchList();
