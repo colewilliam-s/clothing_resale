@@ -3,16 +3,17 @@
 import { useEffect, useState } from 'react';
 import {
   View, Text, TextInput, FlatList, Pressable,
-  KeyboardAvoidingView, Platform,
+  KeyboardAvoidingView, Platform, ActivityIndicator
 } from 'react-native';
 import { label } from '../src/label';
-import { Link, useRouter, Stack } from 'expo-router';
+import { Link, useRouter, Stack, useLocalSearchParams } from 'expo-router';
 import type { Profile, Message } from '../src/types';
 import { supabase } from '../src/supabase';
 import { styles } from '../src/homepage/styles';
 
 export default function DM() {
   const [userId, setUserId] = useState<string | null>(null);
+  const { otherId } = useLocalSearchParams<{ otherId?: string }>();
   const [people, setPeople] = useState<Profile[]>([]);
   const [convId, setConvId] = useState<string | null>(null);
   const [otherName, setOtherName] = useState('');
@@ -37,6 +38,21 @@ export default function DM() {
     }
     load();
   }, []);
+
+  // if the user arrived from someones profile, jump straight into said chat
+  useEffect(() => {
+    if (!otherId) return;
+    async function openFromParam() {
+      const { data, error } = await supabase
+        .from('profiles')
+        .select('id, display_name, university_domain')
+        .eq('id', otherId)
+        .single();
+      if (error) return setError(error.message);
+      openChat(data);
+    }
+    openFromParam();
+  }, [otherId]);
 
   // Load messages and subscribe to new ones when a chat is open
   useEffect(() => {
@@ -92,6 +108,16 @@ export default function DM() {
     }
   }
 
+  // arrived from someone elses profile while the chats aren't ready yet
+  if (otherId && !convId && !error) {
+    return (
+      <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+        <ActivityIndicator size="large" />
+      </View>
+    );
+  }
+
+
   // Screen 1: pick someone to message
   if (!convId) {
     return (
@@ -132,15 +158,17 @@ export default function DM() {
       keyboardVerticalOffset={90}
     >
       <View style={{ padding: 12, flexDirection: 'row', gap: 12, marginTop: '10%' }}>
-        <Pressable 
-          onPress={() => setConvId(null)}
+        <Pressable
+          onPress={() => (otherId ? router.back() : setConvId(null))}
           style={({ pressed }) => [
             styles.textBackButton,
             pressed && styles.backButtonPressed
           ]}
-        ><Text
-          style={styles.backButtonText}
-        >&lt; Back</Text></Pressable>
+        >
+          <Text
+            style={styles.backButtonText}
+          >&lt; Back</Text>
+        </Pressable>
         <Text>{otherName}</Text>
       </View>
       {error ? <Text style={{ color: 'red', paddingHorizontal: 12 }}>{error}</Text> : null}
