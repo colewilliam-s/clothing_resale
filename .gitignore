@@ -7,6 +7,10 @@ node_modules/
 .expo/
 dist/
 web-build/
+
+# listings stuff
+.idea/
+
 expo-env.d.ts
 
 # Native
