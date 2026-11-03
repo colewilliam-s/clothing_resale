@@ -10,16 +10,25 @@ export type SearchProfile = {
 };
 
 export async function searchProfiles(query: string): Promise<SearchProfile[]> {
-  const q = query.trim();
+  const q = query.trim().replace(/^@+/, '');
   if (!q) return [];
 
+  // the signed-in user, read from the saved session (no network call)
+  const { data: { session } } = await supabase.auth.getSession();
+  const myId = session?.user.id;
+
+  // % and _ are wildcards in ilike, so escape them if the user types them
   const escaped = q.replace(/[\\%_]/g, '\\$&');
 
-  const { data, error } = await supabase
+  let request = supabase
     .from('profiles')
     .select('id, display_name, avatar_url, major, class_year, profile_names(first_name, last_name, show_full_name)')
-    .ilike('display_name', `${escaped}%`) // names starting with what was typed, case-insensitive
+    .ilike('display_name', `${escaped}%`)
     .limit(30);
+
+  if (myId) request = request.neq('id', myId); // leaving the signed in user out of the results
+
+  const { data, error } = await request;
 
   if (error) throw new Error(error.message);
   return data as unknown as SearchProfile[];

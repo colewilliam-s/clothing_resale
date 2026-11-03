@@ -11,7 +11,7 @@ export const styles = StyleSheet.create({
         height: 44,
         borderWidth: 1,
         borderColor: '#e5e5e5',
-        borderRadius: 8,
+        borderRadius: 24,
         paddingHorizontal: 12,
         fontSize: 16,
         fontFamily: 'DMSans_400Regular',
