@@ -97,6 +97,17 @@ function RootNavigator({ fontsReady }: { fontsReady: boolean }) {
   if (!fontsReady || !initialized) return null;
 
   return (
-    <Stack screenOptions={{ animation: 'none', headerShown: false }} />
-  );
+  <Stack screenOptions={{ animation: 'none', headerShown: false }}>
+    <Stack.Screen name="(tabs)" />
+    <Stack.Screen
+      name="user/[id]"
+      options={{
+        headerShown: true,
+        title: '',
+        headerBackTitle: 'Back',
+        animation: 'slide_from_right',
+      }}
+    />
+  </Stack>
+);
 }
