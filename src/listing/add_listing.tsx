@@ -15,7 +15,7 @@ type Props = {
   onSaved: () => void;
 };
 
-//const MAX_PHOTOS = 6;
+const MAX_PHOTOS = 6;
 
 // Maybe get a larger more relatable list of categories from database and make a drop down
 const CATEGORIES = ['Tops', 'Bottoms', 'Outerwear', 'Shoes', 'Accessories'];

@@ -1,11 +1,15 @@
 import { View, Text } from 'react-native';
-
-// Placeholder: the List tab isn't designed yet
+import { ListingForm } from '../../src/listing/add_listing';
 
 export default function List() {
   return (
-    <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-      <Text>List: coming soon</Text>
+    <View>
+      <ListingForm
+        saveLabel="Create Listing"
+        onSaved={() => {
+          console.log('Listing successfully created!');
+        }}
+      />
     </View>
   );
 }
