@@ -191,4 +191,14 @@ export const styles = StyleSheet.create({
     textDecorationLine: 'underline',
     fontFamily: 'DMSans_400Regular',
   },
+  messageIcon: {
+    margin: 5
+  },
+  chatButton: {
+    backgroundColor: '#9e9b9b',
+    paddingVertical: 12,
+    paddingHorizontal: 24,
+    borderRadius: 8,
+    alignItems: 'center',
+  }
 });

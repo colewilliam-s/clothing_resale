@@ -2,7 +2,7 @@
 // Used for your own Profile tab and for other users' pages (app/user/[id].tsx).
 
 import { useCallback, useState } from 'react';
-import { FlatList, View, Text, Pressable, ActivityIndicator, useWindowDimensions } from 'react-native';
+import { FlatList, View, Text, Pressable, ActivityIndicator, useWindowDimensions, ColorValue } from 'react-native';
 import { useFocusEffect, useRouter } from 'expo-router';
 import { supabase } from '../supabase';
 import { ItemThumbnail } from '../homepage/ItemThumbnail';
@@ -10,11 +10,20 @@ import { fetchProfilePage } from './api';
 import { Avatar } from './Avatar';
 import { styles, GRID_COLUMNS, GRID_GAP, SIDE_PADDING } from './styles';
 import type { ProfilePageData } from '../types';
+import { Ionicons } from '@expo/vector-icons';
+
+type IconName = keyof typeof Ionicons.glyphMap;
 
 type Props = {
   userId: string;
   isOwn: boolean; // your own profile shows Edit Profile, Log Out, and the post-your-first-item button
 };
+
+const icon =
+  (active: IconName, inactive: IconName) =>
+    ({ focused, color, size }: { focused: boolean; color: ColorValue; size: number }) => (
+      <Ionicons name={focused ? active : inactive} size={size} color={color} />
+    );
 
 export function ProfileView({ userId, isOwn }: Props) {
   const router = useRouter();
@@ -76,7 +85,14 @@ export function ProfileView({ userId, isOwn }: Props) {
         >
           <Text style={styles.secondaryButtonText}>Edit Profile</Text>
         </Pressable>
-      ) : null}
+      ) : (
+        <Pressable
+          style={({ pressed }) => [styles.chatButton, pressed && styles.pressed]}
+          onPress={() => router.push({ pathname: '/dm', params: { otherId: userId } })}
+        >
+          <Ionicons name="chatbubble-outline" size={20} />
+        </Pressable>
+      )}
     </View>
   );
 
