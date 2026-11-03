@@ -23,8 +23,21 @@
       "expo-font",
       "expo-secure-store",
       "expo-splash-screen",
-      ["expo-image-picker", { "photosPermission": "Allow $(PRODUCT_NAME) to access your photos so you can set a profile picture." }],
-      ["expo-build-properties", { "ios": { "enableSceneSupport": true } }]
+      [
+        "expo-image-picker",
+        {
+          "photosPermission": "Allow $(PRODUCT_NAME) to access your photos so you can set a profile picture."
+        }
+      ],
+      [
+        "expo-build-properties",
+        {
+          "ios": {
+            "enableSceneSupport": true
+          }
+        }
+      ],
+      "expo-status-bar"
     ]
   }
 }
