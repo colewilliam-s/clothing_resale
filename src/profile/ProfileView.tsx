@@ -22,7 +22,7 @@ type Props = {
 const icon =
   (active: IconName, inactive: IconName) =>
     ({ focused, color, size }: { focused: boolean; color: ColorValue; size: number }) => (
-      <Ionicons name={focused ? active : inactive} size={size} color={color} />
+      <Ionicons name={focused ? active : inactive} size={size} ColorValue={color} />
     );
 
 export function ProfileView({ userId, isOwn }: Props) {
@@ -120,6 +120,7 @@ export function ProfileView({ userId, isOwn }: Props) {
   return (
     <FlatList
       style={styles.container}
+      contentInsetAdjustmentBehavior='automatic'
       contentContainerStyle={styles.gridContent}
       columnWrapperStyle={styles.gridRow}
       data={profile.listings}
