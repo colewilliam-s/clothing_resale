@@ -40,6 +40,17 @@ export type Listing = {
   color: string | null; // adding this because they are referenced directly inside of add_listing.tsx
 };
 
+export type Fields = {
+  title: string;
+  description: string;
+  price: number;
+  category: string;
+  size: string;
+  condition: string;
+  brand: string;
+  color: string;
+}
+
 // Message variables
 export type Message = {
   id: string;

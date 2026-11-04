@@ -1,7 +1,7 @@
 // Loads and saves profiles in Supabase
 
 import { supabase } from '../supabase';
-import type { ProfileDetails, ProfileNames, ProfilePageData } from '../types';
+import type { ProfileDetails, ProfileNames, ProfilePageData, Fields } from '../types';
 
 const DETAILS = 'id, display_name, university_domain, major, class_year, avatar_url';
 
@@ -26,6 +26,14 @@ export async function fetchMyNames(userId: string): Promise<ProfileNames | null>
     .maybeSingle();
   if (error) throw error;
   return data;
+}
+
+export async function updateListing(id: string, fields: Fields, photoChange: PhotoChange, photo_url: string){
+  // empty function rn, waiting for elliot to write the code
+}
+
+export async function createListing(userId: string, fields: Fields, photoChange: PhotoChange) {
+  // empty function rn, waiting for elliot to write the code
 }
 
 // Everything a profile page shows. Names come back null when the owner keeps them private.
