@@ -8,6 +8,7 @@ import { useSession } from '../session/SessionProvider';
 import { fetchMyNames, saveProfile, type PhotoChange } from './api';
 import { Avatar } from './Avatar';
 import { styles } from './styles';
+import { SafeAreaView } from 'react-native-safe-area-context'
 
 type Props = {
   title?: string; // shown at the top during setup; edit mode uses the screen header instead
@@ -97,96 +98,107 @@ export function ProfileForm({ title, saveLabel, onSaved }: Props) {
 
   if (loadingNames) {
     return (
-      <View style={styles.center}>
-        <ActivityIndicator />
-      </View>
+      <SafeAreaView
+        style={{ flex: 1, backgroundColor: '#fff' }} 
+        edges={['top']}
+      >
+        <View style={styles.center}>
+          <ActivityIndicator />
+        </View>
+      </SafeAreaView>
     );
   }
 
   return (
-    <ScrollView
-      style={styles.container}
-      contentContainerStyle={styles.formContent}
-      keyboardShouldPersistTaps='handled'
-      keyboardDismissMode='on-drag'
-    >
-      {title ? <Text style={styles.formTitle}>{title}</Text> : null}
-
-      <View style={styles.photoPicker}>
-        <Avatar uri={photoUri} size={96} />
-        <View style={styles.photoActions}>
-          <Pressable onPress={pickPhoto} hitSlop={8}>
-            <Text style={styles.photoAction}>{photoUri ? 'Change photo' : 'Add photo'}</Text>
-          </Pressable>
-          {photoUri ? (
-            <Pressable onPress={removePhoto} hitSlop={8}>
-              <Text style={styles.photoAction}>Remove</Text>
-            </Pressable>
-          ) : null}
-        </View>
-      </View>
-
-      <Text style={styles.label}>Display name</Text>
-      <TextInput
-        style={styles.input}
-        value={displayName}
-        onChangeText={setDisplayName}
-        maxLength={40}
-        autoCapitalize='words'
-      />
-
-      <Text style={styles.label}>Class year</Text>
-      <TextInput
-        style={styles.input}
-        value={classYear}
-        onChangeText={setClassYear}
-        placeholder={String(thisYear + 2)}
-        keyboardType='number-pad'
-        maxLength={4}
-      />
-
-      <Text style={styles.label}>Major (optional)</Text>
-      <TextInput
-        style={styles.input}
-        value={major}
-        onChangeText={setMajor}
-        maxLength={60}
-        autoCapitalize='words'
-      />
-
-      <Text style={styles.label}>First name</Text>
-      <TextInput
-        style={styles.input}
-        value={firstName}
-        onChangeText={setFirstName}
-        maxLength={40}
-        autoCapitalize='words'
-      />
-
-      <Text style={styles.label}>Last name (optional)</Text>
-      <TextInput
-        style={styles.input}
-        value={lastName}
-        onChangeText={setLastName}
-        maxLength={40}
-        autoCapitalize='words'
-      />
-
-      <View style={styles.switchRow}>
-        <Text style={styles.switchLabel}>Show my full name on my profile</Text>
-        <Switch value={showFullName} onValueChange={setShowFullName} />
-      </View>
-      <Text style={styles.hint}>If this is off, only you can see your first and last name.</Text>
-
-      {error ? <Text style={styles.error}>{error}</Text> : null}
-
-      <Pressable
-        style={({ pressed }) => [styles.primaryButton, styles.saveButton, pressed && styles.pressed]}
-        onPress={handleSave}
-        disabled={saving}
+    <SafeAreaView
+        style={{ flex: 1, backgroundColor: '#fff' }} 
+        edges={['top']}
       >
-        <Text style={styles.primaryButtonText}>{saving ? 'Saving...' : saveLabel}</Text>
-      </Pressable>
-    </ScrollView>
+      <ScrollView
+        style={styles.container}
+        contentInsetAdjustmentBehavior='automatic'
+        contentContainerStyle={styles.formContent}
+        keyboardShouldPersistTaps='handled'
+        keyboardDismissMode='on-drag'
+      >
+        {title ? <Text style={styles.formTitle}>{title}</Text> : null}
+
+        <View style={styles.photoPicker}>
+          <Avatar uri={photoUri} size={96} />
+          <View style={styles.photoActions}>
+            <Pressable onPress={pickPhoto} hitSlop={8}>
+              <Text style={styles.photoAction}>{photoUri ? 'Change photo' : 'Add photo'}</Text>
+            </Pressable>
+            {photoUri ? (
+              <Pressable onPress={removePhoto} hitSlop={8}>
+                <Text style={styles.photoAction}>Remove</Text>
+              </Pressable>
+            ) : null}
+          </View>
+        </View>
+
+        <Text style={styles.label}>Display name</Text>
+        <TextInput
+          style={styles.input}
+          value={displayName}
+          onChangeText={setDisplayName}
+          maxLength={40}
+          autoCapitalize='words'
+        />
+
+        <Text style={styles.label}>Class year</Text>
+        <TextInput
+          style={styles.input}
+          value={classYear}
+          onChangeText={setClassYear}
+          placeholder={String(thisYear + 2)}
+          keyboardType='number-pad'
+          maxLength={4}
+        />
+
+        <Text style={styles.label}>Major (optional)</Text>
+        <TextInput
+          style={styles.input}
+          value={major}
+          onChangeText={setMajor}
+          maxLength={60}
+          autoCapitalize='words'
+        />
+
+        <Text style={styles.label}>First name</Text>
+        <TextInput
+          style={styles.input}
+          value={firstName}
+          onChangeText={setFirstName}
+          maxLength={40}
+          autoCapitalize='words'
+        />
+
+        <Text style={styles.label}>Last name (optional)</Text>
+        <TextInput
+          style={styles.input}
+          value={lastName}
+          onChangeText={setLastName}
+          maxLength={40}
+          autoCapitalize='words'
+        />
+
+        <View style={styles.switchRow}>
+          <Text style={styles.switchLabel}>Show my full name on my profile</Text>
+          <Switch value={showFullName} onValueChange={setShowFullName} />
+        </View>
+        <Text style={styles.hint}>If this is off, only you can see your first and last name.</Text>
+
+        {error ? <Text style={styles.error}>{error}</Text> : null}
+
+        <Pressable
+          style={({ pressed }) => [styles.primaryButton, styles.saveButton, pressed && styles.pressed]}
+          onPress={handleSave}
+          disabled={saving}
+        >
+          <Text style={styles.primaryButtonText}>{saving ? 'Saving...' : saveLabel}</Text>
+        </Pressable>
+      </ScrollView>
+    </SafeAreaView>
   );
 }
