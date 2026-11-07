@@ -9,7 +9,7 @@ dist/
 web-build/
 
 # listings stuff
-idea/
+.idea/
 
 expo-env.d.ts
 
