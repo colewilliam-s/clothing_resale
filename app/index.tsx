@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { StatusBar } from 'expo-status-bar';
 import { styles } from '../src/login_page/styles';
 import { Text, View, TextInput, ScrollView, Pressable } from 'react-native';
+import { useSession } from '../src/session/SessionProvider';
 import { Link, Stack } from 'expo-router';
 import { verify } from '../src/login_page/verification';
 import { signInWithMicrosoft } from '../src/login_page/microsoftLogin';
@@ -12,9 +13,12 @@ export default function LoginPage() {
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const [showPassword, setShowPassword] = useState(false);
+  const { session } = useSession();
   const toggleShowPassword = () => {
     setShowPassword(!showPassword);
   }
+
+  if (session) return <View style={{ flex: 1, backgroundColor: '#fff'}} />
 
   return (
     <>
