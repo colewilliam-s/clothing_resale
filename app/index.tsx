@@ -56,6 +56,9 @@ export default function LoginPage() {
               />
             </Pressable>
           </View>
+          <Text
+            style={styles.caseText}
+          >*Case Sensitive*</Text>
         </View>
         <Pressable
           style={({ pressed }) => [

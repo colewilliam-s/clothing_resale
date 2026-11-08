@@ -39,11 +39,16 @@ export const styles = StyleSheet.create({
     borderRadius: 6,
     width: '65%',
     marginTop: '12.5%',
-    marginBottom: 65,
+    // marginBottom: 65,
     height: 45,
     textAlign: 'left',
     paddingLeft: 10,
     fontSize: 20
+  },
+  caseText: {
+    color: '#817d7d',
+    marginBottom: '15%',
+    marginLeft: '19%'
   },
   button: {
     backgroundColor: '#1f8a0c',
@@ -79,7 +84,7 @@ export const styles = StyleSheet.create({
     position: 'absolute',
     right: '17.5%',
     marginRight: 10,
-    bottom: 75.5,
+    bottom: 10.5,
   },
   passwordWrapper: {
     width: '100%'
