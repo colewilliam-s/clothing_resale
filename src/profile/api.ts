@@ -28,14 +28,6 @@ export async function fetchMyNames(userId: string): Promise<ProfileNames | null>
   return data;
 }
 
-export async function updateListing(id: string, fields: Fields, photoChange: PhotoChange, photo_url: string){
-  // empty function rn, waiting for elliot to write the code
-}
-
-export async function createListing(userId: string, fields: Fields, photoChange: PhotoChange) {
-  // empty function rn, waiting for elliot to write the code
-}
-
 // Everything a profile page shows. Names come back null when the owner keeps them private.
 export async function fetchProfilePage(userId: string): Promise<ProfilePageData> {
   const { data, error } = await supabase
