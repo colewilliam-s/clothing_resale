@@ -155,7 +155,7 @@ export default function DM() {
     <KeyboardAvoidingView
       style={{ flex: 1 }}
       behavior={Platform.OS === 'ios' ? 'padding' : undefined}
-      keyboardVerticalOffset={90}
+      keyboardVerticalOffset={0}
     >
       <View style={{ padding: 12, flexDirection: 'row', gap: 12, marginTop: '10%' }}>
         <Pressable
@@ -190,14 +190,14 @@ export default function DM() {
           );
         }}
       />
-      <View style={{ flexDirection: 'row', padding: 8, gap: 8 }}>
+      <View style={{ flexDirection: 'row', padding: 8, gap: 8, width: '94%', alignSelf: 'center' }}>
         <TextInput
           style={{ flex: 1, borderWidth: 1, borderColor: '#ccc', borderRadius: 20, paddingHorizontal: 14 }}
           value={text}
           onChangeText={setText}
           placeholder='Message'
         />
-        <Pressable onPress={send}><Text style={{ padding: 10 }}>Send</Text></Pressable>
+        <Pressable onPress={send}><Text style={{ padding: 10, fontWeight: 700 }}>Send</Text></Pressable>
       </View>
     </KeyboardAvoidingView>
   );
