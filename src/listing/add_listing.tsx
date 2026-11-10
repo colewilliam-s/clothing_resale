@@ -4,7 +4,8 @@ import * as ImagePicker from 'expo-image-picker';
 import { useSession } from '../session/SessionProvider';
 //idk
 
-import { type PhotoChange, createListing, updateListing } from '../profile/api';
+import { type PhotoChange } from '../profile/api';
+import { createListing, updateListing } from '../listing/update_createListings'
 import { type Listing } from '../types'
 // i created a styles file in the same directory just to get rid of the errors. further explained in the actual file
 import { styles } from '../listing/styles';
@@ -137,9 +138,9 @@ export function ListingForm({ existing, saveLabel, onSaved }: Props) {
       {/* CATEGORY */}
       <Text style={styles.label}>Category</Text>
       <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: 8 }}>
-        {CATEGORIES.map((c) => (
-          <Pressable key={c} onPress={() => setCategory(c)}>
-            <Text style={category === c ? styles.chipSelected : styles.chip}>{c}</Text>
+        {CATEGORIES.map((cat) => (
+          <Pressable key={cat} onPress={() => setCategory(cat)}>
+            <Text style={category === cat ? styles.chipSelected : styles.chip}>{cat}</Text>
           </Pressable>
         ))}
       </View>
@@ -151,9 +152,9 @@ export function ListingForm({ existing, saveLabel, onSaved }: Props) {
       {/* CONDITION */}
       <Text style={styles.label}>Condition</Text>
       <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: 8 }}>
-        {CONDITIONS.map((c) => (
-          <Pressable key={c} onPress={() => setCondition(c)}>
-            <Text style={condition === c ? styles.chipSelected : styles.chip}>{c}</Text>
+        {CONDITIONS.map((con) => (
+          <Pressable key={con} onPress={() => setCondition(con)}>
+            <Text style={condition === con ? styles.chipSelected : styles.chip}>{con}</Text>
           </Pressable>
         ))}
       </View>
