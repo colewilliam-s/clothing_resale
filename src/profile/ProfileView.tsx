@@ -1,7 +1,7 @@
 // A profile page: photo, names, class year and major, then a grid of listings.
 // Used for your own Profile tab and for other users' pages (app/user/[id].tsx).
 
-import { useCallback, useState } from 'react';
+import { useCallback, useState, useEffect } from 'react';
 import { FlatList, View, Text, Pressable, ActivityIndicator, useWindowDimensions, ColorValue } from 'react-native';
 import { useFocusEffect, useRouter } from 'expo-router';
 import { supabase } from '../supabase';
@@ -49,6 +49,10 @@ export function ProfileView({ userId, isOwn }: Props) {
       load();
     }, [load]),
   );
+
+  useEffect(() =>{
+    if (isOwn) load();
+  }, [isOwn, load]);
 
   async function onRefresh() {
     setRefreshing(true);

@@ -18,8 +18,8 @@ type Props = {
 const MAX_PHOTOS = 6;
 
 // Maybe get a larger more relatable list of categories from database and make a drop down
-const CATEGORIES = ['Tops', 'Bottoms', 'Outerwear', 'Shoes', 'Accessories'];
-const CONDITIONS = ['New with tags', 'Like new', 'Good', 'Fair','Busted','Mended', 'Upcycled'];
+const CATEGORIES = ['Tops', 'Bottoms', 'Outerwear', 'Shoes', 'Accessories', 'Jewelry', 'Other'];
+const CONDITIONS = ['New with tags', 'Like new', 'Good', 'Fair','Busted', 'Mended', 'Upcycled'];
 
 export function ListingForm({ existing, saveLabel, onSaved }: Props) {
   const { session } = useSession();
