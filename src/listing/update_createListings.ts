@@ -7,7 +7,7 @@ import { type PhotoChange} from '../profile/api';
 const BUCKET = 'listing-photos'; // TODO: idk the correct link to database
 
 
-// Convert the form's strings into what the table expects ('' becomes null for optional fields)
+// convert the form's strings into what the table expects ('' becomes null for optional fields)
 function toRow(f: Fields) {
   return {
     title: f.title.trim(),
@@ -16,8 +16,8 @@ function toRow(f: Fields) {
     category: f.category,
     size: f.size.trim(),
     condition: f.condition
-    //brand: f.brand.trim() || null,
-    //color: f.color.trim() || null,
+    // brand: f.brand.trim() || null,
+    // color: f.color.trim() || null,
   };
 }
 
@@ -28,7 +28,7 @@ function extensionFor(mimeType: string) {
   return 'jpg';
 }
 
-// Upload one image and return both its storage path and public URL
+// upload one image and return both its storage path and public URL
 async function uploadPhoto(userId: string, uri: string, mimeType: string) {
   const path = `${userId}/${Date.now()}.${extensionFor(mimeType)}`;
   const body = await (await fetch(uri)).arrayBuffer();
@@ -42,14 +42,14 @@ async function uploadPhoto(userId: string, uri: string, mimeType: string) {
   return { path, url: data.publicUrl };
 }
 
-// Turn a public URL back into a storage path so the file can be deleted
+// turn a public URL back into a storage path so the file can be deleted
 function pathFromUrl(url: string) {
   const marker = `/${BUCKET}/`;
   const i = url.indexOf(marker);
   return i === -1 ? null : decodeURIComponent(url.slice(i + marker.length));
 }
 
-//delete photo 
+// delete photo 
 async function deletePhotoByUrl(url: string | null) {
   if (!url) return;
   const path = pathFromUrl(url);
@@ -71,13 +71,13 @@ export async function createListing(userId: string, fields: Fields, photoChange:
     .insert({ user_id: userId, ...toRow(fields), photo_url: photoUrl });
 
   if (error) {
-    // Don't leave an orphaned image behind if the row failed to save
+    // don't leave an orphaned image behind if the row failed to save
     if (uploadedPath) await supabase.storage.from(BUCKET).remove([uploadedPath]);
     throw new Error(error.message);
   }
 }
 
-//updates listing if signed into current session
+// updates listing if signed into current session
 export async function updateListing(id: string, fields: Fields, photoChange: PhotoChange, photo_url: string | null,) {
   const { data: sessionData } = await supabase.auth.getSession();
   const userId = sessionData.session?.user.id;
@@ -100,12 +100,12 @@ export async function updateListing(id: string, fields: Fields, photoChange: Pho
     .eq('id', id)
     .select('id');
 
-  // With row-level security, an update you aren't allowed to make affects 0 rows without an error
+  // with row-level security, an update you aren't allowed to make affects 0 rows without an error
   if (error || !data || data.length === 0) {
     if (uploadedPath) await supabase.storage.from(BUCKET).remove([uploadedPath]);
     throw new Error(error?.message ?? 'Could not update this listing.');
   }
 
-  // Only delete the old image after the row saved successfully
+  // only delete the old image after the row saved successfully
   if (photoChange.kind !== 'keep') await deletePhotoByUrl(photo_url);
 }
