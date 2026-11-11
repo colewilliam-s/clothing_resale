@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { ScrollView, View, Text, TextInput, Pressable, Image } from 'react-native';
+import { ScrollView, View, Text, TextInput, Pressable, Image, Alert } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
 import { useSession } from '../session/SessionProvider';
 import { SafeAreaView } from 'react-native-safe-area-context'
@@ -71,11 +71,20 @@ export function ListingForm({ existing, saveLabel, onSaved }: Props) {
     if (!condition) return setError('Please choose a condition.');
     if (!userId) return;
 
+    setPhotoUri('');
+    setTitle('');
+    setDescription('');
+    setPrice('');
+    setSize('');
+    setCondition('');
+    setBrand('');
+    setColor('');
+
+
     const fields = {
       title, description, price: priceNumber, category, size, condition, brand, color,
     };
 
-    // this logic doesn't work right now because createListing() and updateListing() don't have any code inside of them rn
     setSaving(true);
     try {
       if (existing) {
@@ -89,6 +98,8 @@ export function ListingForm({ existing, saveLabel, onSaved }: Props) {
     } finally {
       setSaving(false);
     }
+
+    Alert.alert("Listing Created!", "Go take a look on the homepage or your profile to check it out!");
   }
 
 

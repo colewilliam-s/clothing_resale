@@ -4,6 +4,7 @@ import { styles } from '../../src/homepage/styles';
 import { fetchFeed } from '../../src/homepage/feed';
 import type { FeedProfile } from '../../src/types';
 import { UserRow } from '../../src/homepage/UserRow';
+import { realTimeListing } from '../../src/listing/realTimeListing';
 
 // The "Home" header and the bottom tab bar come from app/(tabs)/_layout.js
 
@@ -21,6 +22,8 @@ export default function HomePage() {
       setError(e instanceof Error ? e.message : 'Something went wrong');
     }
   }
+
+  realTimeListing(load);
 
   useEffect(() => {
     load().finally(() => setLoading(false));

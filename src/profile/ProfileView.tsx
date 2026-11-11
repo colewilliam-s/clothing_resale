@@ -11,6 +11,7 @@ import { Avatar } from './Avatar';
 import { styles, GRID_COLUMNS, GRID_GAP, SIDE_PADDING } from './styles';
 import type { ProfilePageData } from '../types';
 import { Ionicons } from '@expo/vector-icons';
+import { realTimeListing } from '../listing/realTimeListing'
 
 type IconName = keyof typeof Ionicons.glyphMap;
 
@@ -42,6 +43,8 @@ export function ProfileView({ userId, isOwn }: Props) {
       setError(e instanceof Error ? e.message : 'Could not load this profile.');
     }
   }, [userId]);
+
+  realTimeListing(load);
 
   // Reload every time the screen comes into view, so edits and new listings show up
   useFocusEffect(
