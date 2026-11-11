@@ -1,0 +1,3 @@
+alter table public.listings
+  add column if not exists brand text,
+  add column if not exists color text;
