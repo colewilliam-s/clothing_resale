@@ -3,6 +3,7 @@
 import { supabase } from '../supabase';
 import type { ProfileDetails, ProfileNames, ProfilePageData, Fields } from '../types';
 
+
 const DETAILS = 'id, display_name, university_domain, major, class_year, avatar_url';
 
 // Setup is finished once someone has a display name and a class year
@@ -28,7 +29,7 @@ export async function fetchMyNames(userId: string): Promise<ProfileNames | null>
   return data;
 }
 
-export async function updateListing(id: string, fields: Fields, photoChange: PhotoChange, photo_url: string){
+export async function updateListing(id: string, fields: Fields, photoChange: PhotoChange, photo_url: string| null,){
   // empty function rn, waiting for elliot to write the code
 }
 
@@ -110,3 +111,6 @@ export async function saveProfile(
   });
   if (namesError) throw namesError;
 }
+
+//not sure if needed
+//export { createListing, updateListing } from '../listing/update_createListings';

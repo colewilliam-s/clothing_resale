@@ -15,9 +15,9 @@ function toRow(f: Fields) {
     price: f.price,
     category: f.category,
     size: f.size.trim(),
-    condition: f.condition
-    //brand: f.brand.trim() || null,
-    //color: f.color.trim() || null,
+    condition: f.condition,
+    brand: f.brand.trim() || null,
+    color: f.color.trim() || null,
   };
 }
 
@@ -68,7 +68,7 @@ export async function createListing(userId: string, fields: Fields, photoChange:
 
   const { error } = await supabase
     .from('listings')
-    .insert({ user_id: userId, ...toRow(fields), photo_url: photoUrl });
+    .insert({ seller_id: userId, ...toRow(fields), image_url: photoUrl })
 
   if (error) {
     // Don't leave an orphaned image behind if the row failed to save
@@ -96,7 +96,7 @@ export async function updateListing(id: string, fields: Fields, photoChange: Pho
 
   const { data, error } = await supabase
     .from('listings')
-    .update({ ...toRow(fields), photo_url: newUrl })
+    .update({ ...toRow(fields), image_url: newUrl })
     .eq('id', id)
     .select('id');
 
