@@ -1,9 +1,9 @@
-import { View, Text } from 'react-native';
+import { View } from 'react-native';
 import { ListingForm } from '../../src/listing/add_listing';
 
 export default function List() {
   return (
-    <View>
+    <View style={{ flex: 1 }}>
       <ListingForm
         saveLabel="Create Listing"
         onSaved={() => {
