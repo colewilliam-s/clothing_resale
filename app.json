@@ -1,11 +1,11 @@
 {
   "expo": {
-    "name": "clothing_resale",
+    "name": "ThryftShyft",
     "slug": "clothing_resale",
     "scheme": "clothingresale",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/email-icon.png",
+    "icon": "./assets/thryftshyft_logo.png",
     "userInterfaceStyle": "light",
     "ios": {
       "supportsTablet": true,

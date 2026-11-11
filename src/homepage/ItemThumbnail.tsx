@@ -25,6 +25,7 @@ export function ItemThumbnail({ listing, size, onPress }: ThumbnailProps) {
   );
 }
 
+// handling if there is too many tiles
 export function MoreTile({ size, onPress }: { size: number; onPress: () => void }) {
   return (
     <Pressable onPress={onPress} style={[styles.tile, styles.moreTile, { width: size, height: size }]}>

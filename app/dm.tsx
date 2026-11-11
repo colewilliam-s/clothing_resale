@@ -1,4 +1,5 @@
 // Direct Messages file
+// Reached from the message button on a profile, or by tapping a chat in the Connect inbox.
 
 import { useEffect, useState } from 'react';
 import {
@@ -6,7 +7,7 @@ import {
   KeyboardAvoidingView, Platform, ActivityIndicator
 } from 'react-native';
 import { label } from '../src/label';
-import { Link, useRouter, Stack, useLocalSearchParams } from 'expo-router';
+import { Redirect, useRouter, useLocalSearchParams } from 'expo-router';
 import type { Profile, Message } from '../src/types';
 import { supabase } from '../src/supabase';
 import { styles } from '../src/homepage/styles';
@@ -14,7 +15,6 @@ import { styles } from '../src/homepage/styles';
 export default function DM() {
   const [userId, setUserId] = useState<string | null>(null);
   const { otherId } = useLocalSearchParams<{ otherId?: string }>();
-  const [people, setPeople] = useState<Profile[]>([]);
   const [convId, setConvId] = useState<string | null>(null);
   const [otherName, setOtherName] = useState('');
   const [messages, setMessages] = useState<Message[]>([]); // newest first
@@ -22,24 +22,15 @@ export default function DM() {
   const [error, setError] = useState('');
   const router = useRouter();
 
-  // Load the signed-in user and everyone else
+  // load the signed-in user
   useEffect(() => {
-    async function load() {
-      const { data: { user } } = await supabase.auth.getUser();
-      if (!user) return setError('Not signed in.');
-      setUserId(user.id);
-
-      const { data, error } = await supabase
-        .from('profiles')
-        .select('id, display_name, university_domain')
-        .neq('id', user.id);
-      if (error) setError(error.message);
-      else setPeople(data);
-    }
-    load();
+    supabase.auth.getUser().then(({ data: { user } }) => {
+      if (!user) setError('Not signed in.');
+      else setUserId(user.id);
+    });
   }, []);
 
-  // if the user arrived from someones profile, jump straight into said chat
+  // open the chat with the person we arrived for
   useEffect(() => {
     if (!otherId) return;
     async function openFromParam() {
@@ -54,7 +45,7 @@ export default function DM() {
     openFromParam();
   }, [otherId]);
 
-  // Load messages and subscribe to new ones when a chat is open
+  // load messages and subscribe to new ones when a chat is open
   useEffect(() => {
     if (!convId) return;
     setMessages([]);
@@ -108,66 +99,46 @@ export default function DM() {
     }
   }
 
-  // arrived from someone elses profile while the chats aren't ready yet
-  if (otherId && !convId && !error) {
+  // chats start from a profile's message button, so there's nobody to open here
+  if (!otherId) return <Redirect href='/connect' />;
+
+  // opening the chat
+  if (!convId && !error) {
     return (
       <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-        <ActivityIndicator size="large" />
+        <ActivityIndicator size='large' />
       </View>
     );
   }
 
-
-  // Screen 1: pick someone to message
+  // couldn't open it
   if (!convId) {
     return (
       <View style={{ flex: 1, padding: 20, marginTop: '10%' }}>
         <Pressable
-          onPress={() => { router.replace('../(tabs)/homepage') }}
-          style={({ pressed }) => [
-            styles.backButton,
-            pressed && styles.backButtonPressed
-          ]}
+          onPress={() => router.back()}
+          style={({ pressed }) => [styles.textBackButton, pressed && styles.backButtonPressed]}
         >
-          <Text
-            style={styles.backButtonText}
-          >&lt; Back to home page
-          </Text>
+          <Text style={styles.backButtonText}>&lt; Back</Text>
         </Pressable>
-        <Text style={{ fontSize: 20, marginBottom: 10, marginTop: 10, fontWeight: 'bold' }}>Message someone</Text>
-        {error ? <Text style={{ color: 'red' }}>{error}</Text> : null}
-        <FlatList
-          data={people}
-          keyExtractor={(p) => p.id}
-          ListEmptyComponent={<Text>No other users yet. Create a second test user in the dashboard.</Text>}
-          renderItem={({ item }) => (
-            <Pressable onPress={() => openChat(item)} style={{ paddingVertical: 12 }}>
-              <Text>{label(item)}</Text>
-            </Pressable>
-          )}
-        />
+        <Text style={{ color: 'red', marginTop: 12 }}>{error}</Text>
       </View>
     );
   }
 
-  // Screen 2: the chat
+  // the chat
   return (
     <KeyboardAvoidingView
       style={{ flex: 1 }}
       behavior={Platform.OS === 'ios' ? 'padding' : undefined}
-      keyboardVerticalOffset={90}
+      keyboardVerticalOffset={0}
     >
       <View style={{ padding: 12, flexDirection: 'row', gap: 12, marginTop: '10%' }}>
         <Pressable
-          onPress={() => (otherId ? router.back() : setConvId(null))}
-          style={({ pressed }) => [
-            styles.textBackButton,
-            pressed && styles.backButtonPressed
-          ]}
+          onPress={() => router.back()}
+          style={({ pressed }) => [styles.textBackButton, pressed && styles.backButtonPressed]}
         >
-          <Text
-            style={styles.backButtonText}
-          >&lt; Back</Text>
+          <Text style={styles.backButtonText}>&lt; Back</Text>
         </Pressable>
         <Text>{otherName}</Text>
       </View>
@@ -190,14 +161,14 @@ export default function DM() {
           );
         }}
       />
-      <View style={{ flexDirection: 'row', padding: 8, gap: 8 }}>
+      <View style={{ flexDirection: 'row', padding: 8, gap: 8, width: '94%', alignSelf: 'center' }}>
         <TextInput
           style={{ flex: 1, borderWidth: 1, borderColor: '#ccc', borderRadius: 20, paddingHorizontal: 14 }}
           value={text}
           onChangeText={setText}
           placeholder='Message'
         />
-        <Pressable onPress={send}><Text style={{ padding: 10 }}>Send</Text></Pressable>
+        <Pressable onPress={send}><Text style={{ padding: 10, fontWeight: 700 }}>Send</Text></Pressable>
       </View>
     </KeyboardAvoidingView>
   );

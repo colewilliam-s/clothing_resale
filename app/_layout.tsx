@@ -1,4 +1,5 @@
 import { useEffect } from 'react';
+import { View, ActivityIndicator, StyleSheet } from 'react-native'
 import { Stack, useRouter, useSegments } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
 import * as Linking from 'expo-linking';
@@ -24,6 +25,8 @@ const LOGGED_OUT_SCREENS = ['index', 'signup', 'resetPassword'];
 // Screens anyone can be on. A password reset link logs the user in,
 // so update-password must not redirect them before they finish.
 const OPEN_SCREENS = ['update-password'];
+
+type Route = '/' | '/setup-profile' | 'homepage';
 
 export default function Layout() {
   const [fontsLoaded, fontError] = useFonts({
@@ -74,40 +77,72 @@ function RootNavigator({ fontsReady }: { fontsReady: boolean }) {
   const segments = useSegments() as string[];
   const router = useRouter();
 
-  useEffect(() => {
-    if (fontsReady && initialized) SplashScreen.hideAsync();
-  }, [fontsReady, initialized]);
+  const screen = segments[0] ?? 'index';
+  const isOpenScreen = OPEN_SCREENS.includes(screen);
+  const onLoggedOutScreen = LOGGED_OUT_SCREENS.includes(screen);
 
-  useEffect(() => {
-    if (!initialized || loading) return;
-
-    const screen = segments[0] ?? 'index';
-    if (OPEN_SCREENS.includes(screen)) return;
-    const onLoggedOutScreen = LOGGED_OUT_SCREENS.includes(screen);
-
+  // Where this person belongs right now, or null if they're already there
+  // (or we can't tell yet). Same rules as before, just computed during render.
+  let target: Route | null = null;
+  if (initialized && !loading && !isOpenScreen) {
     if (!session) {
-      if (!onLoggedOutScreen) router.replace('/');
+      if (!onLoggedOutScreen) target = '/';
     } else if (!isProfileComplete(profile)) {
-      if (screen !== 'setup-profile') router.replace('/setup-profile');
+      if (screen !== 'setup-profile') target = '/setup-profile';
     } else if (onLoggedOutScreen || screen === 'setup-profile') {
-      router.replace('/homepage');
+      target = 'homepage';
     }
-  }, [initialized, loading, session, profile, segments, router]);
+  }
 
-  if (!fontsReady || !initialized) return null;
+  // Hide the native splash once fonts are ready. The spinner below covers the session check.
+  useEffect(() => {
+    if (fontsReady) SplashScreen.hideAsync();
+  }, [fontsReady]);
+
+  useEffect(() => {
+    if (target) router.replace(target);
+  }, [target, router]);
+
+  if (!fontsReady) return null;
+
+  // Cover the app while we check the saved session, wait for the profile,
+  // or have a redirect that hasn't happened yet
+  const covered = !initialized || (!isOpenScreen && (loading || target !== null));
 
   return (
-  <Stack screenOptions={{ animation: 'none', headerShown: false }}>
-    <Stack.Screen name="(tabs)" />
-    <Stack.Screen
-      name="user/[id]"
-      options={{
-        headerShown: true,
-        title: '',
-        headerBackTitle: 'Back',
-        animation: 'slide_from_right',
-      }}
-    />
-  </Stack>
-);
+    <>
+      {initialized ? (
+        <Stack screenOptions={{ animation: 'none', headerShown: false }}>
+          <Stack.Screen name="(tabs)" />
+          <Stack.Screen
+            name="user/[id]"
+            options={{
+              headerShown: true,
+              title: '',
+              headerBackTitle: 'Back',
+              animation: 'slide_from_right',
+            }}
+          />
+        </Stack>
+      ) : null}
+      {covered ? (
+        <View style={cover.overlay}>
+          <ActivityIndicator size="large" />
+        </View>
+      ) : null}
+    </>
+  );
 }
+
+const cover = StyleSheet.create({
+  overlay: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    backgroundColor: '#fff',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+});
