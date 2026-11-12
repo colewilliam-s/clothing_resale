@@ -11,6 +11,7 @@ import { Redirect, useRouter, useLocalSearchParams } from 'expo-router';
 import type { Profile, Message } from '../src/types';
 import { supabase } from '../src/supabase';
 import { styles } from '../src/homepage/styles';
+import { loadCachedMessages, saveCachedMessages, mergeMessages } from '../src/messages/cache';
 
 export default function DM() {
   const [userId, setUserId] = useState<string | null>(null);
@@ -47,36 +48,69 @@ export default function DM() {
 
   // load messages and subscribe to new ones when a chat is open
   useEffect(() => {
-    if (!convId) return;
+    if (!convId || !userId) return;
+    let cancelled = false;
     setMessages([]);
 
-    supabase
-      .from('messages')
-      .select('id, sender_id, body, created_at')
-      .eq('conversation_id', convId)
-      .order('created_at', { ascending: false })
-      .limit(50)
-      .then(({ data, error }) => {
-        if (error) setError(error.message);
-        else setMessages(data);
+    (async () => {
+      // 1. Show what's saved on the phone right away
+      const cached = await loadCachedMessages(userId, convId);
+      if (cancelled) return;
+      if (cached.length) setMessages(cached);
+
+      // 2. Ask the database only for messages newer than the newest saved one
+      let query = supabase
+        .from("messages")
+        .select("id, sender_id, body, created_at")
+        .eq("conversation_id", convId)
+        .order("created_at", { ascending: false })
+        .limit(50);
+      if (cached.length) query = query.gt("created_at", cached[0].created_at);
+
+      const { data, error } = await query;
+      if (cancelled) return;
+      if (error) return setError(error.message);
+
+      // A full page of 50 might mean there were more, which would leave a gap
+      // in the saved copy, so in that case use the fresh page only.
+      const cachedIds = new Set(cached.map((m) => m.id));
+      setMessages((prev) => {
+        const liveOnes = prev.filter((m) => !cachedIds.has(m.id)); // arrived over realtime meanwhile
+        const base = data.length === 50 ? data : mergeMessages(cached, data);
+        return mergeMessages(base, liveOnes);
       });
+    })();
 
     const channel = supabase
       .channel(`chat:${convId}`)
       .on(
-        'postgres_changes',
-        { event: 'INSERT', schema: 'public', table: 'messages', filter: `conversation_id=eq.${convId}` },
+        "postgres_changes",
+        {
+          event: "INSERT",
+          schema: "public",
+          table: "messages",
+          filter: `conversation_id=eq.${convId}`,
+        },
         (payload) => {
           const incoming = payload.new as Message;
           setMessages((prev) =>
-            prev.some((m) => m.id === incoming.id) ? prev : [incoming, ...prev]
+            prev.some((m) => m.id === incoming.id) ? prev : [incoming, ...prev],
           );
-        }
+        },
       )
       .subscribe();
 
-    return () => { supabase.removeChannel(channel); };
-  }, [convId]);
+    return () => {
+      cancelled = true;
+      supabase.removeChannel(channel);
+    };
+  }, [convId, userId]);
+
+  // keep the phone's copy up to date whenever the list changes
+  useEffect(() => {
+    if (!convId || !userId || messages.length === 0) return;
+    saveCachedMessages(userId, convId, messages);
+  }, [messages, convId, userId]);
 
   async function openChat(person: Profile) {
     setError('');
