@@ -1,11 +1,3 @@
-# instructions for professor and TA
-i already mentioned it later down in the readme, but i just did some updates so i'm re-writing it up here.
-also, here is the information needed for your .env file which goes in the root of the project
-```
-EXPO_PUBLIC_SUPABASE_URL=https://ijvbghtoaqphfcnhjjea.supabase.co
-EXPO_PUBLIC_SUPABASE_KEY=sb_publishable_DG34zA2t3PFRSRyH-l5uSQ_EKp_933O
-```
-
 ## running the app
 we're using expo go for our compiler, so in the terminal you wanna make sure that you are not only logged into expo go by using
 ```
@@ -41,6 +33,13 @@ npx expo start
 To close the project, use the command
 ```
 Ctrl ^ C
+```
+
+## example .env file
+These are not the actual links to our database, just example links
+```
+EXPO_PUBLIC_SUPABASE_URL=https://abcdefghijklmnopqrst.supabase.co
+EXPO_PUBLIC_SUPABASE_KEY=sb_publishable_******
 ```
 ## Pushing items to the supabase db (PostgreSQL) (supabase is now connected to the repository)
 Whenever you want to push something to the database, make sure you have supabase installed by running
