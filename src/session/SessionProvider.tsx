@@ -6,6 +6,7 @@ import type { Session } from '@supabase/supabase-js';
 import { supabase } from '../supabase';
 import { fetchMyProfile } from '../profile/api';
 import type { ProfileDetails } from '../types';
+import { clearMessageCache } from '../messages/cache';
 
 type SessionState = {
   session: Session | null;
@@ -46,7 +47,8 @@ export function SessionProvider({ children }: { children: ReactNode }) {
       setSession(data.session);
       setAuthChecked(true);
     });
-    const { data: sub } = supabase.auth.onAuthStateChange((_event, s) => {
+    const { data: sub } = supabase.auth.onAuthStateChange((event, s) => {
+      if (event === 'SIGNED_OUT') clearMessageCache()
       setSession(s);
       setAuthChecked(true);
     });
