@@ -97,7 +97,7 @@ export function ProfileView({ userId, isOwn }: Props) {
           style={({ pressed }) => [styles.chatButton, pressed && styles.pressed]}
           onPress={() => router.push({ pathname: '/dm', params: { otherId: userId } })}
         >
-          <Ionicons name="chatbubble-outline" size={20} />
+          <Ionicons name="chatbubble-outline" size={25} />
         </Pressable>
       )}
     </View>

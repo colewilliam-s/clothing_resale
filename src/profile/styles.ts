@@ -200,5 +200,7 @@ export const styles = StyleSheet.create({
     paddingHorizontal: 24,
     borderRadius: 8,
     alignItems: 'center',
+    opacity: .5,
+    width: '35%'
   }
 });

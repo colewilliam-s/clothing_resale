@@ -60,12 +60,16 @@ export const styles = StyleSheet.create({
     paddingHorizontal: SIDE_PADDING,
     paddingBottom: 32,
     flexGrow: 1,
+    borderWidth: 4,
+    borderColor: '#000'
   },
   gridRow: {
     gap: GRID_GAP,
   },
   gridItem: {
     marginBottom: GRID_GAP,
+    borderWidth: 4,
+    borderColor: '#000',
   },
   empty: {
     alignItems: 'center',
