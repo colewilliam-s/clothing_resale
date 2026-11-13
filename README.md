@@ -1,3 +1,10 @@
+# ThryftShyft
+Open source repository because we believe that if we are promising a safer environment to students by utilizing the .edu extension of most university/college emails, we might as well let them see the code that lets it function how it does.
+
+ThryftShyft is meant to be an alternative from Depop and Facebook Marketplace for college students who don't trust the online environment of current online marketplaces, specifically around clothing. Not only do we aim to provide a satisfactory experience, we also hope that we can build a level of trust with our userbase. Our main goal is to not only make the user experience more accessible for students, but also to provide as secure of a safe haven for all that do not want to worry about the uncertainties of online shopping as we can.
+
+With our codebase being open source, we understand that some people may want to make changes to the codebase, with either bug fixes or things that they want to improve in the future. We hope that people will carry the best intention when requesting to make changes to our codebase.
+--
 ## running the app
 we're using expo go for our compiler, so in the terminal you wanna make sure that you are not only logged into expo go by using
 ```
@@ -14,7 +21,6 @@ npx expo start -c
 some of this stuff may be wrong, but if you have any questions on compiling it (mainly because i've been doing development with my phone, and didn't need to update anything concerning expo cause i held off on updating xcode and my laptop), please let me know. i promise it compiles, i was just stubborn about expo go for a little bit
 ## 
 
-# Clothing Resale Project
 ## Requirements per the class
 - Facilitates resale of second-hand clothing
 - Similar in function to Facebook Marketplace, but for UVM (and also safe)
