@@ -1,15 +1,12 @@
 -- conversations stay hidden until a message exists
 alter table public.conversations
   add column created_by uuid references public.profiles(id) on delete set null;
-
 alter table public.conversations
   alter column last_message_at drop default;
-
 update public.conversations c
 set last_message_at = (
   select max(m.created_at) from public.messages m where m.conversation_id = c.id
 );
-
 -- ...then the create function public.can_view_conversation(...) and everything after it
 
 
@@ -29,23 +26,18 @@ as $$
             and (c.last_message_at is not null or c.created_by = auth.uid())
     );
 $$;
-
 drop policy "Participants can view conversations" on public.conversations;
 drop policy "Participants can view participants" on public.conversation_participants;
 drop policy "Participants can send messages as themselves" on public.messages;
-
 create policy "Participants can view started conversations"
   on public.conversations for select to authenticated
   using (public.can_view_conversation(id));
-
 create policy "Participants can view participants of started conversations"
   on public.conversation_participants for select to authenticated
   using (public.can_view_conversation(conversation_id));
-
 create policy "Participants can send messages as themselves"
   on public.messages for insert to authenticated
   with check (sender_id = auth.uid() and public.can_view_conversation(conversation_id));
-
 -- record who opened the chat, and let someone reuse an empty chat the other person opened
 create or replace function public.get_or_create_conversation(other uuid, listing uuid default null)
 returns uuid
